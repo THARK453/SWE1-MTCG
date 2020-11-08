@@ -23,8 +23,8 @@ public class Client {
                 writer.flush();
                 System.out.print("cli: ");
             }
-            writer.write("quit");
-            writer.newLine();
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
