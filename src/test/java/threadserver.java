@@ -17,7 +17,7 @@ public class threadserver implements Runnable {
     public void run() {
        try {
 
-             /*  BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 String message;
                 String tmsg;
 
@@ -30,12 +30,13 @@ public class threadserver implements Runnable {
                         System.out.println("srv: received:-- " + message);
                     }
 
-                } while (message!=null && !message.isEmpty());*/
+                } while (message!=null && !message.isEmpty());
+
 
 
           //httpparse.decodeRequestLine(reader,httprequest);
           //httpparse.decodeRequestHeader(reader,httprequest);
-           System.out.println("thread start");
+
          Request httpRequest = parse.parse2request(s.getInputStream());
 
            PrintStream out = new PrintStream(s.getOutputStream());
@@ -73,7 +74,11 @@ public class threadserver implements Runnable {
                String httpRes = parse.buildResponse(httpRequest, e.toString());
                out.print(httpRes);
            }
+
+
                 out.flush();
+                //s.close();
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +88,6 @@ public class threadserver implements Runnable {
            } catch (IOException e) {
                e.printStackTrace();
            }
-           System.out.println("thread out");
        }
 
 

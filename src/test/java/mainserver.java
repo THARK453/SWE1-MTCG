@@ -23,28 +23,23 @@ public class mainserver  {
         try {
             while (true) {
                 Socket s = _listener.accept();
-                System.out.println("connet");
+                System.out.println("srv: sending welcome message");
                 new Thread(new threadserver(s)).start();
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        finally {
-            try {
-                _listener.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            _listener = null;
-            System.out.println("close server");
+
+
+        try {
+            _listener.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-
-
+        _listener = null;
+        System.out.println("close server");
     }
-
-
 
 
 }
