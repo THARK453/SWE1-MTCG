@@ -33,10 +33,12 @@ public class threadserver implements Runnable {
                 } while (message!=null && !message.isEmpty());*/
 
 
-          //httpparse.decodeRequestLine(reader,httprequest);
-          //httpparse.decodeRequestHeader(reader,httprequest);
-           System.out.println("thread start");
+
+          // System.out.println("thread start");
          Request httpRequest = parse.parse2request(s.getInputStream());
+
+           System.out.println(httpRequest.getMethod()+" "+httpRequest.getUrl()+" "+httpRequest.getVersion()+"\n");
+           System.out.println(httpRequest.getHeaders()+"\n");
 
            PrintStream out = new PrintStream(s.getOutputStream());
 
@@ -61,10 +63,42 @@ public class threadserver implements Runnable {
                String result ="";
                //最最最简单的实现方案：通过if判断找到方法
               if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/messages")){
+                  System.out.println("showmessages");
+                  System.out.println(httpRequest.getUrl());
                    result = messages.showMessages();
                }else if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/messages")){
+                  System.out.println("addMessages");
+                  System.out.println(httpRequest.getUrl());
                    result = messages.addMessages(httpRequest.getMessage());
-               }else{
+               }else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl()!="/messages"){
+                  System.out.println(httpRequest.getUrl());
+                  System.out.println("SelectMessages");
+                  String getindex=httpRequest.getUrl().replaceAll("messages","");
+                  getindex=getindex.replace("/","");
+                  System.out.println(getindex);
+                  int index=Integer.parseInt(getindex);
+                  System.out.println("index--"+index);
+                  result=messages.SelectMessages(index);
+              }else if(httpRequest.getMethod().equals("PUT") ){
+                  System.out.println(httpRequest.getUrl());
+                  System.out.println("updateMessages");
+                  String getindex=httpRequest.getUrl().replaceAll("messages","");
+                  getindex=getindex.replace("/","");
+                  System.out.println(getindex);
+                  int index=Integer.parseInt(getindex);
+                  System.out.println("index--"+index);
+                  result=messages.updateMessages(index,httpRequest.getMessage());
+              }else if(httpRequest.getMethod().equals("DELETE") ){
+                  System.out.println(httpRequest.getUrl());
+                  System.out.println("updateMessages");
+                  String getindex=httpRequest.getUrl().replaceAll("messages","");
+                  getindex=getindex.replace("/","");
+                  System.out.println(getindex);
+                  int index=Integer.parseInt(getindex);
+                  System.out.println("index--"+index);
+                  result=messages.DELETEMessages(index);
+              }
+              else{
                    result = "{\"error\":\"no Method\"}";
                }
                String httpRes = parse.buildResponse(httpRequest, result);
@@ -83,7 +117,7 @@ public class threadserver implements Runnable {
            } catch (IOException e) {
                e.printStackTrace();
            }
-           System.out.println("thread out");
+           //System.out.println("thread out");
        }
 
 

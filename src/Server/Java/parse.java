@@ -72,7 +72,7 @@ public class parse {
         httpResponse.setVersion(request.getVersion());
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
+        headers.put("Content-Type", "text/plain");
         headers.put("Content-Length", String.valueOf(response.getBytes().length));
         httpResponse.setHeaders(headers);
 
