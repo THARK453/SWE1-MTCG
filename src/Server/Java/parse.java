@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class parse {
 
-    private static void decodeRequestLine(BufferedReader reader, Request request) throws IOException {
+    private static void RequestLine(BufferedReader reader, Request request) throws IOException {
         String str = reader.readLine();
         if(str!=null) {
             String[] strs = str.split(" ");
@@ -23,7 +23,7 @@ public class parse {
     }
 
 
-    private static void decodeRequestHeader(BufferedReader reader, Request request) throws Exception {
+    private static void RequestHeader(BufferedReader reader, Request request) throws Exception {
         Map<String, String> headers = new HashMap<>(16);
         String line = reader.readLine();
         String[] kv;
@@ -39,7 +39,7 @@ public class parse {
         request.setHeaders(headers);
     }
 
-    private static void decodeRequestMessage(BufferedReader reader, Request request) throws Exception {
+    private static void Requestbody(BufferedReader reader, Request request) throws Exception {
         //请求头可能存在大小写问题 content-length
         int contentLen = Integer.parseInt(request.getHeaders().getOrDefault("Content-Length", "0"));
         System.out.println(contentLen);
@@ -54,12 +54,12 @@ public class parse {
         request.setMessage(new String(message));
     }
 
-    public static Request parse2request(InputStream reqStream) throws Exception {
+    public static Request parserequest(InputStream reqStream) throws Exception {
         BufferedReader httpReader = new BufferedReader(new InputStreamReader(reqStream, "UTF-8"));
         Request httpRequest = new Request();
-        decodeRequestLine(httpReader, httpRequest);
-        decodeRequestHeader(httpReader, httpRequest);
-        decodeRequestMessage(httpReader, httpRequest);
+        RequestLine(httpReader, httpRequest);
+        RequestHeader(httpReader, httpRequest);
+        Requestbody(httpReader, httpRequest);
         return httpRequest;
     }
 
@@ -81,7 +81,7 @@ public class parse {
         StringBuilder builder = new StringBuilder();
         buildResponseLine(httpResponse, builder);
         buildResponseHeaders(httpResponse, builder);
-        buildResponseMessage(httpResponse, builder);
+        buildResponsebody(httpResponse, builder);
         return builder.toString();
     }
 
@@ -98,7 +98,7 @@ public class parse {
         stringBuilder.append("\n");
     }
 
-    private static void buildResponseMessage(Response response, StringBuilder stringBuilder) {
+    private static void buildResponsebody(Response response, StringBuilder stringBuilder) {
         stringBuilder.append(response.getMessage());
     }
 }

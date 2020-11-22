@@ -23,7 +23,7 @@ public class mainserver  {
         try {
             while (true) {
                 Socket s = _listener.accept();
-                System.out.println("connet");
+
                 new Thread(new threadserver(s)).start();
 
             }

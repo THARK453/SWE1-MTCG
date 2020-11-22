@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-public class Client {
+public class GameClient {
     public static void main(String[] args) {
         System.out.println("start client");
 
@@ -33,3 +33,5 @@ public class Client {
 
     }
 }
+
+

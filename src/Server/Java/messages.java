@@ -51,11 +51,8 @@ public class messages {
         File file=new File(path);
         Scanner scan=new Scanner(file);
 
-        if (scan.hasNextLine()){
-            writer.newLine();
-            writer.append(message);
-        }else
-       writer.append(message);
+
+       writer.append("\n"+message);
        writer.close();
         System.out.println(message);
         return "Messages Added";
@@ -108,8 +105,8 @@ public class messages {
         FileWriter writer=new FileWriter(path);
         writer.write(tmsg);
         writer.close();
-        System.out.println("--"+msg);
-        System.out.println("##"+tmsg);
+        //System.out.println("--"+msg);
+        //System.out.println("##"+tmsg);
         return "updateMessages";
 
     }
@@ -139,8 +136,8 @@ public class messages {
         FileWriter writer=new FileWriter(path);
         writer.write(tmsg);
         writer.close();
-        System.out.println("--"+msg);
-        System.out.println("##"+tmsg);
+        //System.out.println("--"+msg);
+        //System.out.println("##"+tmsg);
         return msg+" ->DELETE";
 
     }

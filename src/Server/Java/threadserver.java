@@ -32,71 +32,67 @@ public class threadserver implements Runnable {
 
                 } while (message!=null && !message.isEmpty());*/
 
+           BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+           writer.write("connect to server");
+
 
 
           // System.out.println("thread start");
-         Request httpRequest = parse.parse2request(s.getInputStream());
+           Request httpRequest = parse.parserequest(s.getInputStream());
 
            System.out.println(httpRequest.getMethod()+" "+httpRequest.getUrl()+" "+httpRequest.getVersion()+"\n");
            System.out.println(httpRequest.getHeaders()+"\n");
+           System.out.println(httpRequest.getHeaders().get("Host")+"\n");
+           if(httpRequest.getHeaders().containsKey("Content-Type")){
+               System.out.println(httpRequest.getHeaders().containsKey("Content-Type")+"\n");
+               System.out.println(httpRequest.getHeaders().get("Content-Type"));
+           }
 
            PrintStream out = new PrintStream(s.getOutputStream());
-
-
-
-          /* PrintStream out = new PrintStream(s.getOutputStream());
-
-           String mes = "this is a test!->"+"method->"+httpRequest.getMethod()+"url->"+httpRequest.getUrl()+"version->"+httpRequest.getVersion();
-           out.println("HTTP/1.0 200 OK");
-           out.println("MIME_version:1.0");
-           out.println("Content_Type:text/html");
-           int len = mes.getBytes().length;
-           out.println("Content_Length:"+len);
-           out.println("");
-           out.println("this is a test!->");
-           out.println("method->"+httpRequest.getMethod());
-           out.println("url->"+httpRequest.getUrl());
-           out.println("version->"+httpRequest.getVersion());
-           out.flush();*/
 
            try {
                String result ="";
                //最最最简单的实现方案：通过if判断找到方法
               if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/messages")){
-                  System.out.println("showmessages");
+                  //System.out.println("showmessages");
                   System.out.println(httpRequest.getUrl());
                    result = messages.showMessages();
+
                }else if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/messages")){
-                  System.out.println("addMessages");
+                  // System.out.println("addMessages");
                   System.out.println(httpRequest.getUrl());
                    result = messages.addMessages(httpRequest.getMessage());
+
                }else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl()!="/messages"){
                   System.out.println(httpRequest.getUrl());
-                  System.out.println("SelectMessages");
+                  // System.out.println("SelectMessages");
                   String getindex=httpRequest.getUrl().replaceAll("messages","");
                   getindex=getindex.replace("/","");
                   System.out.println(getindex);
                   int index=Integer.parseInt(getindex);
                   System.out.println("index--"+index);
                   result=messages.SelectMessages(index);
+
               }else if(httpRequest.getMethod().equals("PUT") ){
                   System.out.println(httpRequest.getUrl());
-                  System.out.println("updateMessages");
+                  // System.out.println("updateMessages");
                   String getindex=httpRequest.getUrl().replaceAll("messages","");
                   getindex=getindex.replace("/","");
                   System.out.println(getindex);
                   int index=Integer.parseInt(getindex);
                   System.out.println("index--"+index);
                   result=messages.updateMessages(index,httpRequest.getMessage());
+
               }else if(httpRequest.getMethod().equals("DELETE") ){
                   System.out.println(httpRequest.getUrl());
-                  System.out.println("updateMessages");
+
                   String getindex=httpRequest.getUrl().replaceAll("messages","");
                   getindex=getindex.replace("/","");
                   System.out.println(getindex);
                   int index=Integer.parseInt(getindex);
                   System.out.println("index--"+index);
                   result=messages.DELETEMessages(index);
+
               }
               else{
                    result = "{\"error\":\"no Method\"}";
