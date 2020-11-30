@@ -1,0 +1,52 @@
+@startuml
+
+
+
+threadserver <|-- mainserver
+Request <|-- parse
+Response <|-- parse
+parse <|-- threadserver
+messages <|-- threadserver
+
+class mainserver {
+   main()
+}
+
+class threadserver {
+ run()
+}
+class Request{
+    private String method;
+
+    private String url;
+
+    private String version;
+
+    private Map<String, String> headers;
+
+    private String message;
+}
+
+class parse{
+ buildResponse()
+ parserequest()
+}
+
+class Response{
+    private String version;
+    private int code;
+    private String status;
+
+    private Map<String, String> headers;
+
+    private String message;
+}
+class messages{
+showMessages()
+addMessages(String message)
+SelectMessages(int index)
+updateMessages(int index,String message)
+DELETEMessages(int index)
+}
+
+@enduml

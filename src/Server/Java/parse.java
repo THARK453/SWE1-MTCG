@@ -65,6 +65,9 @@ public class parse {
 
 
 
+
+
+
     public static String buildResponse(Request request, String response) {
         Response httpResponse = new Response();
         httpResponse.setCode(200);
@@ -101,4 +104,20 @@ public class parse {
     private static void buildResponsebody(Response response, StringBuilder stringBuilder) {
         stringBuilder.append(response.getMessage());
     }
+
+    public static void buildRequest(Request request,String str){
+
+
+    }
+    private static void buildRequestLine(Response response, StringBuilder stringBuilder,String str) {
+        String lines[]=str.split("\\r?\\n");
+
+        stringBuilder.append(lines[0]).append(" ").append(lines[1]).append(" ")
+                .append(lines[2]).append("\n");
+    }
+
+    private static void buildRRequestHeaders(Response response, StringBuilder stringBuilder) {
+
+    }
+
 }

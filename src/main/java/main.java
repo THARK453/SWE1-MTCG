@@ -1,17 +1,24 @@
+import java.io.Console;
 import java.util.Scanner;
 
 public class main {
     public static void main(String[] args) {
-      /* String test;
+       String test;
        Scanner input= new Scanner(System.in);
-       while (true){
-          test=input.nextLine();
-          if("quit".equals(test)){
-              System.out.println("000000");
-              break;
-          }
-          System.out.println(test);
-       }*/
+        Console con=System.console();
+        System.out.println("username: ");
+        String username=input.nextLine();
+        System.out.println("password: ");
+
+        String password=new String(con.readPassword());
+        System.out.println(username+"\n"+password);
+
+
+
+
+
+
+
 
         player playerA = new player();
 

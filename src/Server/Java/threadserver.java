@@ -31,11 +31,10 @@ public class threadserver implements Runnable {
                     }
 
                 } while (message!=null && !message.isEmpty());*/
-
            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
-           writer.write("connect to server");
-
-
+           writer.write("connect to server!");
+           writer.newLine();
+           writer.flush();
 
           // System.out.println("thread start");
            Request httpRequest = parse.parserequest(s.getInputStream());

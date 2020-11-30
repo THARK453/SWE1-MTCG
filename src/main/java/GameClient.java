@@ -1,8 +1,6 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class GameClient {
     public static void main(String[] args) {
@@ -13,16 +11,30 @@ public class GameClient {
              BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
 
-            System.out.println("cli: " + reader.readLine());
-            System.out.println("cli: " + reader.readLine());
-            String input = null;
-            System.out.print("cli: ");
-            while (!"quit".equals(input = consoleReader.readLine())) {
+            System.out.println("server"+reader.readLine());
+
+            String input = "";
+            System.out.print("option: "+"\n"+"create user -[1]"+"Login -[2]\n");
+           /* while (!"quit".equals(input = consoleReader.readLine())) {
                 writer.write(input);
                 writer.newLine();
                 writer.flush();
                 System.out.print("cli: ");
+            }*/
+            Scanner s=new Scanner(System.in);
+            int option=s.nextInt();
+            if(option==1){
+                Scanner sin=new Scanner(System.in);
+                System.out.println("username: ");
+                String username=sin.nextLine();
+                System.out.println("password: ");
+                String password=sin.nextLine();
+                input=input.concat("POST\n"+username+"\n"+password);
+                Request request=new Request();
+                parse.buildRequest(request,input);
             }
+
+
 
 
         } catch (Exception e) {

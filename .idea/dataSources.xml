@@ -7,5 +7,11 @@
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mariadb://localhost:3306/test</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="MTCG" uuid="e08e56b9-a627-4e7f-b0c0-8116781ac2ff">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/MTCG</jdbc-url>
+    </data-source>
   </component>
 </project>
