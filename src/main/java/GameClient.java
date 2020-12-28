@@ -2,6 +2,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
+
+
 public class GameClient {
     public static void main(String[] args) {
         System.out.println("start client");
@@ -15,12 +17,7 @@ public class GameClient {
 
             String input = "";
             System.out.print("option: "+"\n"+"create user -[1]"+"Login -[2]\n");
-           /* while (!"quit".equals(input = consoleReader.readLine())) {
-                writer.write(input);
-                writer.newLine();
-                writer.flush();
-                System.out.print("cli: ");
-            }*/
+
             Scanner s=new Scanner(System.in);
             int option=s.nextInt();
             if(option==1){
@@ -31,7 +28,7 @@ public class GameClient {
                 String password=sin.nextLine();
                 input=input.concat("POST\n"+username+"\n"+password);
                 Request request=new Request();
-                parse.buildRequest(request,input);
+
             }
 
 

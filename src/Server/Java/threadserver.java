@@ -47,13 +47,13 @@ public class threadserver implements Runnable {
                System.out.println(httpRequest.getHeaders().get("Content-Type"));
            }
 
-           PrintStream out = new PrintStream(s.getOutputStream());
+          PrintStream out = new PrintStream(s.getOutputStream());
 
            try {
                String result ="";
                //最最最简单的实现方案：通过if判断找到方法
               if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/messages")){
-                  //System.out.println("showmessages");
+                  System.out.println("showmessages");
                   System.out.println(httpRequest.getUrl());
                    result = messages.showMessages();
 
