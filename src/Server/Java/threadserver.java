@@ -8,9 +8,10 @@ import java.net.*;
 public class threadserver implements Runnable {
 
 
-    Socket s;
+    Socket s,s2;
     public threadserver(Socket s) {
         this.s=s;
+        this.s2=s;
     }
 
     @Override
@@ -31,10 +32,24 @@ public class threadserver implements Runnable {
                     }
 
                 } while (message!=null && !message.isEmpty());*/
-           BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+          /* BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s2.getOutputStream()));
            writer.write("connect to server!");
            writer.newLine();
-           writer.flush();
+           writer.flush();*/
+
+          /* String msg="connect to server!";
+           PrintStream out = new PrintStream(s.getOutputStream());
+           out.println(msg);
+           out.flush();*/
+
+
+         // BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+          /* Scanner scan=new Scanner(new InputStreamReader(s.getInputStream()));
+           while (scan.hasNextLine()){
+               System.out.println(scan.nextLine());
+           }*/
+
 
           // System.out.println("thread start");
            Request httpRequest = parse.parserequest(s.getInputStream());
@@ -46,16 +61,23 @@ public class threadserver implements Runnable {
                System.out.println(httpRequest.getHeaders().containsKey("Content-Type")+"\n");
                System.out.println(httpRequest.getHeaders().get("Content-Type"));
            }
+           System.out.println(httpRequest.getMessage());
 
           PrintStream out = new PrintStream(s.getOutputStream());
+          String result ="";
+           result= httpRequest.getMessage();
+           String httpRes = parse.buildResponse(httpRequest, result);
+           out.print(httpRes);
+           out.flush();
 
-           try {
+          /* try {
                String result ="";
                //最最最简单的实现方案：通过if判断找到方法
               if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/messages")){
                   System.out.println("showmessages");
                   System.out.println(httpRequest.getUrl());
                    result = messages.showMessages();
+                  System.out.println(result);
 
                }else if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/messages")){
                   // System.out.println("addMessages");
@@ -98,11 +120,14 @@ public class threadserver implements Runnable {
                }
                String httpRes = parse.buildResponse(httpRequest, result);
                out.print(httpRes);
+
            } catch (Exception e) {
+
                String httpRes = parse.buildResponse(httpRequest, e.toString());
                out.print(httpRes);
+
            }
-                out.flush();
+                //out.flush();*/
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,3 +145,6 @@ public class threadserver implements Runnable {
     }
 
 }
+
+
+

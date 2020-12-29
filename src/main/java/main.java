@@ -22,7 +22,7 @@ public class main {
 
         player playerA = new player();
 
-        playerA.cardarry.add(new Dragon(50, 100, 1));
+        playerA.cardarry.add(new Dragon(50));
 
 
         playerA.cardarry.get(0);

@@ -1,7 +1,7 @@
 
-public class Dragon extends monstercards {
-    public Dragon(int damage,  int HP, int type) {
-        super(damage, HP, type);
+public class Dragon extends Cards {
+    public Dragon(int damage) {
+        super(damage);
         setCname("Dragon");
     }
 

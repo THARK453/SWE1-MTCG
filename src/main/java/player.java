@@ -11,11 +11,7 @@ public class player {
 
 
 
-    public void showplayer(monstercards card){
 
-        System.out.println("player class"+card.getDamage()+"\n"+card.getCname());
-
-    }
 
 
 
