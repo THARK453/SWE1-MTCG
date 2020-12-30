@@ -14,7 +14,7 @@ public class mainserver  {
         System.out.println("start server");
 
         try {
-            _listener = new ServerSocket(8000, 5);
+            _listener = new ServerSocket(10001, 5);
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -23,7 +23,6 @@ public class mainserver  {
         try {
             while (true) {
                 Socket s = _listener.accept();
-
                 new Thread(new threadserver(s)).start();
 
             }

@@ -1,9 +1,20 @@
+import java.lang.reflect.Type;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.*;
-
+import java.io.IOException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mysql.management.util.Str;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
 
 public class threadserver implements Runnable {
 
@@ -45,35 +56,54 @@ public class threadserver implements Runnable {
 
          // BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
 
-          /* Scanner scan=new Scanner(new InputStreamReader(s.getInputStream()));
+           /*Scanner scan=new Scanner(new InputStreamReader(s.getInputStream()));
            while (scan.hasNextLine()){
                System.out.println(scan.nextLine());
            }*/
 
 
           // System.out.println("thread start");
+           /*GameData gameData=new GameData();
+           gameData.connect();*/
+
+
            Request httpRequest = parse.parserequest(s.getInputStream());
 
-           System.out.println(httpRequest.getMethod()+" "+httpRequest.getUrl()+" "+httpRequest.getVersion()+"\n");
-           System.out.println(httpRequest.getHeaders()+"\n");
-           System.out.println(httpRequest.getHeaders().get("Host")+"\n");
+           System.out.println("line : \n"+httpRequest.getMethod()+" "+httpRequest.getUrl()+" "+httpRequest.getVersion()+"\n");
+           System.out.println("head : \n"+httpRequest.getHeaders()+"\n");
+           /*System.out.println(httpRequest.getHeaders().get("Host")+"\n");
            if(httpRequest.getHeaders().containsKey("Content-Type")){
                System.out.println(httpRequest.getHeaders().containsKey("Content-Type")+"\n");
                System.out.println(httpRequest.getHeaders().get("Content-Type"));
+           }*/
+           System.out.println("body :\n"+httpRequest.getMessage());
+           //System.out.println("\n frist body: \n"+httpRequest.getMessage().substring(0,1));
+
+
+           if (httpRequest.getMessage().substring(0,1).equals("[")){
+               httpRequest.setBodytype("Arrayjson");
+           }else {
+               httpRequest.setBodytype("json");
            }
-           System.out.println(httpRequest.getMessage());
+
+
 
           PrintStream out = new PrintStream(s.getOutputStream());
-          String result ="";
-           result= httpRequest.getMessage();
-           String httpRes = parse.buildResponse(httpRequest, result);
-           out.print(httpRes);
-           out.flush();
 
-          /* try {
+           try {
                String result ="";
-               //最最最简单的实现方案：通过if判断找到方法
-              if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/messages")){
+               if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/users")){
+
+                       Jsonmsg jsonmsg=parse.getjson(httpRequest.getMessage());
+                       result=Datasql.Registration(jsonmsg);
+
+               }
+               else if (httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/packages")){
+                   List<Jsonmsg> jsonmsgList=parse.getjsonlist(httpRequest.getMessage());
+                   result=Datasql.createpackages(jsonmsgList);
+               }
+
+             /* if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/messages")){
                   System.out.println("showmessages");
                   System.out.println(httpRequest.getUrl());
                    result = messages.showMessages();
@@ -114,7 +144,8 @@ public class threadserver implements Runnable {
                   System.out.println("index--"+index);
                   result=messages.DELETEMessages(index);
 
-              }
+              }*/
+
               else{
                    result = "{\"error\":\"no Method\"}";
                }
@@ -127,7 +158,7 @@ public class threadserver implements Runnable {
                out.print(httpRes);
 
            }
-                //out.flush();*/
+                out.flush();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,11 +1,21 @@
 
+import java.io.IOException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.mysql.management.util.Str;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class parse {
@@ -107,6 +117,18 @@ public class parse {
 
 
 
+    public static Jsonmsg getjson(String msg){
+        Gson gson=new Gson();
+        Jsonmsg jsonmsg=gson.fromJson(msg,Jsonmsg.class);
+        return jsonmsg;
+    }
+
+    public static List<Jsonmsg> getjsonlist(String msg){
+        Gson gson=new Gson();
+        Type t = new TypeToken<List<Jsonmsg>>() {}.getType();
+        List<Jsonmsg> jsonmsgs = gson.fromJson(msg, t);
+        return jsonmsgs;
+    }
 
 
 

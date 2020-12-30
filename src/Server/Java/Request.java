@@ -12,7 +12,15 @@ public  class Request {
 
     private String message;
 
+    private String bodytype;
 
+    public String getBodytype() {
+        return bodytype;
+    }
+
+    public void setBodytype(String bodytype) {
+        this.bodytype = bodytype;
+    }
 
     public String getMethod() {
         return method;

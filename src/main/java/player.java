@@ -7,12 +7,4 @@ public class player {
 
     ArrayList< Cards >cardarry=new ArrayList<>();
 
-
-
-
-
-
-
-
-
 }

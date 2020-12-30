@@ -13,13 +13,6 @@ public class main {
         String password=new String(con.readPassword());
         System.out.println(username+"\n"+password);
 
-
-
-
-
-
-
-
         player playerA = new player();
 
         playerA.cardarry.add(new Dragon(50));

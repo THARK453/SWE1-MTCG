@@ -20,7 +20,13 @@ public class Data {
 
             while (rst.next())
             {
-               System.out.println(rst.getString("username"));
+               System.out.println(rst.getString("username")+" "+
+                       rst.getString("userpassword"));
+               if(rst.getString("username").equals("user")){
+                   System.out.println("true");
+               }else {
+                   System.out.println("Flase");
+               }
 
             }
 
