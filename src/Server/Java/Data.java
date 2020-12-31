@@ -15,20 +15,39 @@ public class Data {
             Class.forName("org.postgresql.Driver");
             Connection myconect=DriverManager.getConnection(url,user,password);
             Statement mystm=myconect.createStatement();
-            String sql="select * from userinfor";
+            String sql="select * from cards";
+           // String sql="INSERT INTO userinfor  values(2, 'user2','test2')";
             ResultSet rst=mystm.executeQuery(sql);
+            ResultSetMetaData rsmd = rst.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
 
+            ResultSetPrinter.printResultSet(rst);
+
+           /* for (int i = 1; i <= columnsNumber; i++) {
+                System.out.print(rsmd.getColumnName(i)+"  ");
+            }
+            System.out.println("\n");
             while (rst.next())
             {
-               System.out.println(rst.getString("username")+" "+
-                       rst.getString("userpassword"));
+
+                for (int i = 1; i <= columnsNumber; i++) {
+
+                    String columnValue = rst.getString(i);
+                    System.out.print(columnValue + "   " );
+                }
+
+               System.out.println(rst.getString("name"));
                if(rst.getString("username").equals("user")){
                    System.out.println("true");
                }else {
                    System.out.println("Flase");
                }
 
-            }
+            }*/
+
+
+
+
 
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();

@@ -80,11 +80,21 @@ public class threadserver implements Runnable {
            //System.out.println("\n frist body: \n"+httpRequest.getMessage().substring(0,1));
 
 
+
+
            if (httpRequest.getMessage().substring(0,1).equals("[")){
                httpRequest.setBodytype("Arrayjson");
            }else {
                httpRequest.setBodytype("json");
            }
+
+           System.out.println("Token: \n"+httpRequest.getHeaders().containsKey("Authorization"));
+           System.out.println(httpRequest.getHeaders().get("Authorization"));
+           if(httpRequest.getHeaders().containsKey("Authorization")){
+               System.out.println("\n"+parse.gettoken(httpRequest.getHeaders().get("Authorization")));
+           }
+
+
 
 
 
@@ -95,12 +105,20 @@ public class threadserver implements Runnable {
                if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/users")){
 
                        Jsonmsg jsonmsg=parse.getjson(httpRequest.getMessage());
+                       jsonmsg.setToken(jsonmsg.getUsername()+"-mtcgToken");
                        result=Datasql.Registration(jsonmsg);
+
+                   //result="\nRegistration done username: "+jsonmsg.getUsername()+" password: "+jsonmsg.getPassword();
 
                }
                else if (httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/packages")){
                    List<Jsonmsg> jsonmsgList=parse.getjsonlist(httpRequest.getMessage());
-                   result=Datasql.createpackages(jsonmsgList);
+                   //result=Datasql.createpackages(jsonmsgList);
+
+                   for(int n=0;n<jsonmsgList.size();n++){
+                       result=result.concat("\nID: "+jsonmsgList.get(n).getId()+" name: "+jsonmsgList.get(n).getName()
+                               +" Damage: "+jsonmsgList.get(n).getDamage()+"\n");
+                   }
                }
 
              /* if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/messages")){

@@ -20,8 +20,16 @@ public class Jsonmsg {
           private String CardToTrade;
           private String Type;
           private String MinimumDamage;
+          private String token;
 
-   /* private   List<String> Username = new ArrayList<String>();
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+          /* private   List<String> Username = new ArrayList<String>();
     private  List<String> Password = new ArrayList<String>();
     private  List<String> Id = new ArrayList<String>();
     private  List<String> Name = new ArrayList<String>();

@@ -130,7 +130,10 @@ public class parse {
         return jsonmsgs;
     }
 
-
+    public static String gettoken(String msg){
+        String token=msg.split(" ")[1];
+        return token;
+    }
 
 
 }
