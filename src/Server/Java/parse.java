@@ -135,5 +135,11 @@ public class parse {
         return token;
     }
 
+    public static List<String> getnokeyjsonlist(String msg){
+        Gson gson=new Gson();
+        Type t = new TypeToken<List<String>>() {}.getType();
+        List<String> messageList = gson.fromJson(msg, t);
+        return messageList;
+    }
 
 }

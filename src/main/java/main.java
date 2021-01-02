@@ -5,6 +5,19 @@ public class main {
     public static void main(String[] args) {
        String test;
        Scanner input= new Scanner(System.in);
+
+        String Str = new String("Welcome to Yiibai.com");
+
+        System.out.print("Return Value :" );
+        System.out.println(Str.startsWith("Welcome") );
+
+        System.out.print("Return Value :" );
+        System.out.println(Str.startsWith("Tutorials") );
+
+        System.out.print("Return Value :" );
+        System.out.println(Str.startsWith("Yiibai", 11) );
+
+
         Console con=System.console();
         System.out.println("username: ");
         String username=input.nextLine();

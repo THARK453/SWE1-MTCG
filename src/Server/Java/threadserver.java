@@ -81,12 +81,14 @@ public class threadserver implements Runnable {
 
 
 
+        if(httpRequest.getMessage()!=null){
+            if (httpRequest.getMessage().substring(0,1).equals("[")){
+                httpRequest.setBodytype("Arrayjson");
+            }else {
+                httpRequest.setBodytype("json");
+            }
+        }
 
-           if (httpRequest.getMessage().substring(0,1).equals("[")){
-               httpRequest.setBodytype("Arrayjson");
-           }else {
-               httpRequest.setBodytype("json");
-           }
 
            System.out.println("Token: \n"+httpRequest.getHeaders().containsKey("Authorization"));
            System.out.println(httpRequest.getHeaders().get("Authorization"));
@@ -106,19 +108,76 @@ public class threadserver implements Runnable {
 
                        Jsonmsg jsonmsg=parse.getjson(httpRequest.getMessage());
                        jsonmsg.setToken(jsonmsg.getUsername()+"-mtcgToken");
-                       result=Datasql.Registration(jsonmsg);
+                       int i=Datasql.checkRegistration(jsonmsg);
+
+                       if(i==1){
+                           result="\nuser "+jsonmsg.getUsername()+" already exists";
+                       }else {
+                           result=Datasql.Registration(jsonmsg);
+                       }
+
 
                    //result="\nRegistration done username: "+jsonmsg.getUsername()+" password: "+jsonmsg.getPassword();
 
                }
+
+               else if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/sessions")){
+                      Jsonmsg jsonmsg=parse.getjson(httpRequest.getMessage());
+                      result=Datasql.Login(jsonmsg);
+               }
+
                else if (httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/packages")){
-                   List<Jsonmsg> jsonmsgList=parse.getjsonlist(httpRequest.getMessage());
+                   int check=Datasql.checkadmin(httpRequest.getHeaders().get("Authorization"));
+                   if(check==1){
+                       List<Jsonmsg> jsonmsgList=parse.getjsonlist(httpRequest.getMessage());
+                       /*for(int n=0;n<jsonmsgList.size();n++){
+                           result=result.concat("\nID: "+jsonmsgList.get(n).getId()+" name: "+jsonmsgList.get(n).getName()
+                                   +" Damage: "+jsonmsgList.get(n).getDamage()+"\n");
+                       }*/
+                       result=Datasql.createpackages(jsonmsgList);
+                   }else if(check==2){
+                       result="\nadmin Not logged in";
+                   }else {
+
+                       result="\nError Invalid Token or No admin found";
+                   }
+
+
                    //result=Datasql.createpackages(jsonmsgList);
 
-                   for(int n=0;n<jsonmsgList.size();n++){
-                       result=result.concat("\nID: "+jsonmsgList.get(n).getId()+" name: "+jsonmsgList.get(n).getName()
-                               +" Damage: "+jsonmsgList.get(n).getDamage()+"\n");
+
+               }
+
+               else if (httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/transactions/packages")){
+                   if(httpRequest.getHeaders().containsKey("Authorization")){
+                       result=Datasql.acquirepackages(httpRequest.getHeaders().get("Authorization"));
+                   }else {
+                       result="\nno token";
                    }
+
+               }
+
+               else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/cards")){
+                   if(httpRequest.getHeaders().containsKey("Authorization")){
+                       result=Datasql.showacquired(httpRequest.getHeaders().get("Authorization"));
+                   }else {
+                       result="\nno token";
+                   }
+
+               }
+
+               else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().startsWith("/deck")){
+                          result=Datasql.showdeck(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"));
+               }
+
+               else if (httpRequest.getMethod().equals("PUT") && httpRequest.getUrl().equals("/deck")){
+                   List<String> messageList=parse.getnokeyjsonlist(httpRequest.getMessage());
+                   if(messageList.size()==4){
+                       result=Datasql.configuredeck(messageList,httpRequest.getHeaders().get("Authorization"));
+                   }else {
+                       result=result.concat("\nInvalid number of cards");
+                   }
+
                }
 
              /* if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/messages")){
