@@ -3,10 +3,10 @@
 
 
 threadserver <|-- mainserver
-Request <|-- parse
-Response <|-- parse
-parse <|-- threadserver
-messages <|-- threadserver
+Parse.Request <|-- Parse.parse
+Parse.Response <|-- Parse.parse
+Parse.parse <|-- threadserver
+Parse.messages <|-- threadserver
 
 class mainserver {
    main()
@@ -15,7 +15,7 @@ class mainserver {
 class threadserver {
  run()
 }
-class Request{
+class Parse.Request{
     private String method;
 
     private String url;
@@ -27,12 +27,12 @@ class Request{
     private String message;
 }
 
-class parse{
+class Parse.parse{
  buildResponse()
  parserequest()
 }
 
-class Response{
+class Parse.Response{
     private String version;
     private int code;
     private String status;
@@ -41,7 +41,7 @@ class Response{
 
     private String message;
 }
-class messages{
+class Parse.messages{
 showMessages()
 addMessages(String message)
 SelectMessages(int index)
