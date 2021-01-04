@@ -1,9 +1,14 @@
 package Data;
-
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import Parse.ResultSetPrinter;
 
 import java.sql.*;
 import java.sql.DriverManager;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Data {
    private static String url="jdbc:postgresql://localhost:5432/MTCG";
@@ -17,19 +22,37 @@ public class Data {
             Class.forName("org.postgresql.Driver");
             Connection myconect=DriverManager.getConnection(url,user,password);
             Statement mystm=myconect.createStatement();
-            String sql="select * from stats where \"ELO\"<=100 ORDER BY  \"ELO\" DESC";
+            String sql="select * from userinfor";
            // String sql="INSERT INTO userinfor  values(2, 'user2','test2')";
-            ResultSet rst=mystm.executeQuery(sql);
-            ResultSetMetaData rsmd = rst.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
+            ResultSet rs=mystm.executeQuery(sql);
+            ResultSetMetaData md = rs.getMetaData();
+            int columnsNumber = md.getColumnCount();
+            List list = new ArrayList();
+
+            while (rs.next()) {
+                list.add(rs.getInt("id"));
+            }
+
+            System.out.println(list.get(0));
+
+
 
            // ResultSetPrinter.printResultSet(rst);
-           int i=0;
+          /* int i=0;
+
+            JsonArray jsonArray = new JsonArray();
+
             while (rst.next()){
                 i=rst.getRow();
-                System.out.println("test: "+rst.getInt("ELO"));
+              JsonObject jsonObject=new JsonObject();
+              jsonObject.addProperty("Id",rst.getString("id"));
+              jsonObject.addProperty("Name",rst.getString("name"));
+              jsonObject.addProperty("Damage",rst.getString("damage"));
+              jsonArray.add(jsonObject);
             }
-            System.out.println("test: "+i);
+            System.out.println(jsonArray);
+            System.out.println("test: "+i);*/
+
            /* for (int i = 1; i <= columnsNumber; i++) {
                 System.out.print(rsmd.getColumnName(i)+"  ");
             }

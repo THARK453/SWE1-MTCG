@@ -136,12 +136,12 @@ public class threadserver implements Runnable {
                else if (httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/packages")){
                    int check=Datasql.checkadmin(httpRequest.getHeaders().get("Authorization"));
                    if(check==1){
-                       List<Jsonmsg> jsonmsgList=parse.getjsonlist(httpRequest.getMessage());
+                       //List<Jsonmsg> jsonmsgList=parse.getjsonlist(httpRequest.getMessage());
                        /*for(int n=0;n<jsonmsgList.size();n++){
                            result=result.concat("\nID: "+jsonmsgList.get(n).getId()+" name: "+jsonmsgList.get(n).getName()
                                    +" Damage: "+jsonmsgList.get(n).getDamage()+"\n");
                        }*/
-                       result=Datasql.createpackages(jsonmsgList);
+                       //result=Datasql.createpackages(jsonmsgList);
                    }else if(check==2){
                        result="\nadmin Not logged in";
                    }else {

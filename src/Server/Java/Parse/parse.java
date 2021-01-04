@@ -2,15 +2,16 @@ package Parse;
 
 import java.io.IOException;
 
-import Parse.Jsonmsg;
+import Cards.Cards;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import Server.*;
-import Data.*;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,5 +139,32 @@ public class parse {
         List<String> messageList = gson.fromJson(msg, t);
         return messageList;
     }
+
+   public static List<Cards> parsecards(List<Cards> cardsList){
+       for(int n=0;n<cardsList.size();n++){
+
+
+           if(cardsList.get(n).getName().startsWith("Water")){
+               cardsList.get(n).setType(1);
+           }else if(cardsList.get(n).getName().startsWith("Fire")){
+               cardsList.get(n).setType(2);
+           }else {
+               cardsList.get(n).setType(0);
+           }
+
+
+           if(cardsList.get(n).getName().endsWith("Spell")){
+               cardsList.get(n).setMonster(false);
+           }else {
+               cardsList.get(n).setMonster(true);
+           }
+
+
+
+
+       }
+
+        return cardsList;
+   }
 
 }

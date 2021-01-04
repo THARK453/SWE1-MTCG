@@ -6,17 +6,6 @@ public class main {
        String test;
        Scanner input= new Scanner(System.in);
 
-        String Str = new String("Welcome to Yiibai.com");
-
-        System.out.print("Return Value :" );
-        System.out.println(Str.startsWith("Welcome") );
-
-        System.out.print("Return Value :" );
-        System.out.println(Str.startsWith("Tutorials") );
-
-        System.out.print("Return Value :" );
-        System.out.println(Str.startsWith("Yiibai", 11) );
-
 
         Console con=System.console();
         System.out.println("username: ");
@@ -26,15 +15,7 @@ public class main {
         String password=new String(con.readPassword());
         System.out.println(username+"\n"+password);
 
-        player playerA = new player();
 
-        playerA.cardarry.add(new Dragon(50));
-
-
-        playerA.cardarry.get(0);
-
-
-        System.out.println(playerA.cardarry.get(0).getCname() + "\n" + playerA.cardarry.get(0).getDamage());
 
     }
 }

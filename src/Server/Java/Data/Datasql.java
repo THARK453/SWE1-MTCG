@@ -419,7 +419,9 @@ public class Datasql {
                         msg=msg.concat("\n\nuser: "+rstuser.getString("username")+" in battlefield : "+rst.getInt("id"));
                         int check=battle.checkbattlefield(rst.getInt("id"));
                         if(check>=2){
-                            int n=battle.Startthebattlefield(rst.getInt("id"));
+                            int n=battle.inbattlethebattlefield(rst.getInt("id"));
+                            ResultSet rstbattle=battle.getbattlefielduser(rst.getInt("id"));
+
                         }
 
                     }else {
@@ -435,7 +437,7 @@ public class Datasql {
                             msg=msg.concat("\n\nuser: "+rstuser.getString("username")+" in battlefield : "+rstbattlefield.getInt("id"));
                             int check=battle.checkbattlefield(rstbattlefield.getInt("id"));
                             if(check>=2){
-                                int n=battle.Startthebattlefield(rstbattlefield.getInt("id"));
+                                int n=battle.inbattlethebattlefield(rstbattlefield.getInt("id"));
                             }
 
                         }else {

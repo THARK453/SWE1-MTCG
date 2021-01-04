@@ -944,21 +944,25 @@ sequence|table|32849|32843|3
     </sequence>
     <table id="32" parent="16" name="battlefield">
       <ObjectId>32843</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>789</StateNumber>
     </table>
     <table id="33" parent="16" name="cards">
       <ObjectId>16557</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>657</StateNumber>
     </table>
     <table id="34" parent="16" name="deck">
       <ObjectId>24696</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>767</StateNumber>
     </table>
     <table id="35" parent="16" name="package">
       <ObjectId>16637</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>657</StateNumber>
     </table>
@@ -969,6 +973,7 @@ sequence|table|32849|32843|3
     </table>
     <table id="37" parent="16" name="userinfor">
       <ObjectId>16493</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>790</StateNumber>
     </table>
