@@ -23,7 +23,7 @@ public class Datasql {
     public static String Registration(Jsonmsg jsonmsg){
        String msg="";
        String sql="INSERT INTO userinfor (username, userpassword, basictoken, coin,status) values(?, ?, ?, ?,'Notloggedin')";
-       String sqlstats="INSERT INTO stats  VALUES (?, ?)";
+       String sqlstats="INSERT INTO stats  VALUES (?, ?, ?, ?)";
        String name= jsonmsg.getUsername();
        String password= jsonmsg.getPassword();
        String token=jsonmsg.getToken();
@@ -39,7 +39,7 @@ public class Datasql {
            ResultSet rstuser=selectuser(token);
            try {
                if(rstuser.next()){
-                   int n=GameData.Dosql(sqlstats,rstuser.getInt("id"),ELO);
+                   int n=GameData.Dosql(sqlstats,rstuser.getInt("id"),ELO,0,0);
                    if(n==1){
                        msg="\n\nRegistration done username: "+jsonmsg.getUsername();
                    }else {

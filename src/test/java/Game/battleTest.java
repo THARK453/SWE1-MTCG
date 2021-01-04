@@ -31,7 +31,7 @@ class battleTest {
     }
 
     @Test
-    void startthebattlefield() {
+    void inbattlethebattlefield() {
         int i=battle.inbattlethebattlefield(2);
         if(i==1){
             System.out.println("Start battle 2");
@@ -41,7 +41,7 @@ class battleTest {
     }
 
     @Test
-    void closethebattlefield() {
+    void Availablethebattlefield() {
         int i=battle.Availablethebattlefield(1);
         if(i==1){
             System.out.println("Close battle ");
@@ -73,7 +73,7 @@ class battleTest {
     void Startbattle(){
         ResultSet rstbattle=battle.getbattlefielduser(1);
         String msg=battle.Startbattle(rstbattle);
-
+        System.out.println(msg);
 
     }
 }

@@ -59,7 +59,22 @@ public class deck {
 
      }
 
+    public static void printdeckcards(List<Cards> cardsList){
+        System.out.println("\n\n");
+        for(int n=0;n<cardsList.size();n++){
 
+            System.out.println(" id: "+cardsList.get(n).getId()+" name: "+cardsList.get(n).getName()+" damage: "
+                    +cardsList.get(n).getDamage()+" type: "+cardsList.get(n).getType());
+            if(cardsList.get(n).isMonster()){
+                System.out.println(" is a Monster");
+            }else {
+                System.out.println(" is a Spell");
+            }
+
+
+        }
+        System.out.println("\n\n");
+    }
 
 
 }

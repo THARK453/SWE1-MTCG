@@ -32,7 +32,10 @@ public class Data {
             while (rs.next()) {
                 list.add(rs.getInt("id"));
             }
-
+            Map rowData = new HashMap();//声明Map
+            for (int i = 1; i <= columnsNumber; i++) {
+                rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
+            }
             System.out.println(list.get(0));
 
 

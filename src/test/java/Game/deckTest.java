@@ -33,6 +33,8 @@ class deckTest {
         ResultSet rst=deck.selectdeck(1);
         JsonArray jsonArray=deck.setcardsmsg(rst);
         System.out.println(jsonArray);
+        String msg= jsonArray.toString();
+        System.out.println("\n"+msg);
     }
 
     @Test
@@ -41,21 +43,9 @@ class deckTest {
         List<Cards> cardsList=deck.createdeckcards(1);
         String msg="";
 
-
-            for(int n=0;n<cardsList.size();n++){
-
-                System.out.println(" id: "+cardsList.get(n).getId()+" name: "+cardsList.get(n).getName()+" damage: "
-                        +cardsList.get(n).getDamage()+" type: "+cardsList.get(n).getType());
-                if(cardsList.get(n).isMonster()){
-                    System.out.println(" is a Monster");
-                }else {
-                    System.out.println(" is a Spell");
-                }
+        deck.printdeckcards(cardsList);
 
 
-            }
-
-        msg=msg.concat(" \ntest fight function: "+Fights.Startfight(cardsList.get(0)));
 
         System.out.println(msg);
 

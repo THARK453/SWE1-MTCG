@@ -76,32 +76,13 @@ public class battle {
           } catch (SQLException throwables) {
               throwables.printStackTrace();
           }
-          List<Cards> user_1deckcards = deck.createdeckcards(user_id.get(0));
-          List<Cards> user_2deckcards = deck.createdeckcards(user_id.get(1));
-          System.out.println(" test user1: ");
-          for (int n = 0; n < user_1deckcards.size(); n++) {
+          List<Cards> user_0deckcards = deck.createdeckcards(user_id.get(0));
+          List<Cards> user_1deckcards = deck.createdeckcards(user_id.get(1));
 
-              System.out.println(" id: " + user_1deckcards.get(n).getId() + " name: " + user_1deckcards.get(n).getName() + " damage: "
-                      + user_1deckcards.get(n).getDamage() + " type: " + user_1deckcards.get(n).getType());
-              if (user_1deckcards.get(n).isMonster()) {
-                  System.out.println(" is a Monster");
-              } else {
-                  System.out.println(" is a Spell");
-              }
-          }
-          System.out.println(" \n\n\ntest user2: ");
-              for (int x = 0; x < user_2deckcards.size(); x++) {
-
-                  System.out.println(" id: " + user_2deckcards.get(x).getId() + " name: " + user_2deckcards.get(x).getName() + " damage: "
-                          + user_2deckcards.get(x).getDamage() + " type: " + user_2deckcards.get(x).getType());
-                  if (user_2deckcards.get(x).isMonster()) {
-                      System.out.println(" is a Monster");
-                  } else {
-                      System.out.println(" is a Spell");
-                  }
-
-              }
-
+          Fights fights=new Fights(user_0deckcards,user_1deckcards,user_id.get(0),user_id.get(1),100);
+          result=fights.Startfight();
+          /*System.out.println("user0: "+fights.getUser_0id()+" "+fights.getUser0name());
+          System.out.println("user1: "+fights.getUser_1id()+" "+fights.getUser1name());*/
 
               return result;
           }

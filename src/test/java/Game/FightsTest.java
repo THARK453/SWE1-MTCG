@@ -8,5 +8,6 @@ class FightsTest {
 
     @Test
     void startfight() {
+
     }
 }
