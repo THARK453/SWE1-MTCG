@@ -34,6 +34,8 @@ public class stats {
         return rst;
     }
 
+
+
     public static int DeductionELO(int id,int damage){
         String sqlDeduction="UPDATE stats SET \"ELO\"=\"ELO\"-? WHERE user_id=?";
         int i=GameData.Dosql(sqlDeduction,damage,id);

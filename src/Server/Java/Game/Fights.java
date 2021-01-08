@@ -23,6 +23,8 @@ public class Fights {
     private String user1name;
     private float damage0;
     private float damage1;
+    private float combatdamage0;
+    private float combatdamage1;
     private String cardname0;
     private String cardname1;
     private int type0;
@@ -91,19 +93,34 @@ public class Fights {
         }
     }
 
+    public String getELO(){
+        String msg="";
+        ResultSet rst0=stats.getstats(user_0id);
+        ResultSet rst1=stats.getstats(user_1id);
+        try {
+            rst0.next();
+            rst1.next();
+            msg=msg.concat("  user:("+user_0id+" "+user0name+") ELO: "+rst0.getInt("ELO"));
+            msg=msg.concat("\n user:("+user_1id+" "+user1name+") ELO: "+rst1.getInt("ELO")+"\n");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    return msg;
+    }
+
     public String Startfight(){
         String result="";
 
 
         while (rounds>0){
-            List<Integer> Rnumer0= parse.getRandomNumList(4,0,4);
-            List<Integer> Rnumer1=parse.getRandomNumList(4,0,4);
-            for(int i=0;i<4;i++){
+            List<Integer> Rnumer0= parse.getRandomNumList(20,0,20);
+            List<Integer> Rnumer1=parse.getRandomNumList(20,0,20);
+            for(int i=0;i<20;i++){
                 if (rounds>0){
                    result=result.concat(combat(Rnumer0.get(i),Rnumer1.get(i)));
                 }
             }
-            result=result.concat("\n reshuffle\n\n");
+            result=result.concat("\n\n reshuffle\n\n");
         }
 
         ResultSet rst0=stats.getstats(user_0id);
@@ -135,8 +152,8 @@ public class Fights {
     private String combat(int x,int y){
         String msg="";
         currentrounds++;
-        damage0=user0card.get(x).getDamage();
-        damage1=user1card.get(y).getDamage();
+        combatdamage0=damage0=user0card.get(x).getDamage();
+        combatdamage1=damage1=user1card.get(y).getDamage();
         cardname0=user0card.get(x).getName();
         cardname1=user1card.get(y).getName();
         type0=user0card.get(x).getType();
@@ -155,16 +172,16 @@ public class Fights {
 
 
     private String Effectivenesscombat(){
-        String msg="\nEffectivenesscombat:\n";
+        String msg="";
 
         if(type0==0){
             if(type1==2){
-                damage1=damage1*2;
-                damage0=damage0/2;
+                combatdamage1=combatdamage1*2;
+                combatdamage0=combatdamage0/2;
                 msg=msg.concat(Docombat());
             }else if(type1==1){
-                damage1=damage1/2;
-                damage0=damage0*2;
+                combatdamage1=combatdamage1/2;
+                combatdamage0=combatdamage0*2;
                 msg=msg.concat(Docombat());
             }else {
                 msg=msg.concat(Docombat());
@@ -172,12 +189,12 @@ public class Fights {
 
         }else if(type0==1){
             if (type1==2){
-                damage1=damage1/2;
-                damage0=damage0*2;
+                combatdamage1=combatdamage1/2;
+                combatdamage0=combatdamage0*2;
                 msg=msg.concat(Docombat());
             }else if(type1==0){
-                damage1=damage1*2;
-                damage0=damage0/2;
+                combatdamage1=combatdamage1*2;
+                combatdamage0=combatdamage0/2;
                 msg=msg.concat(Docombat());
             }else {
                 msg=msg.concat(Docombat());
@@ -185,12 +202,12 @@ public class Fights {
 
         }else if(type0==2){
             if(type1==0){
-                damage1=damage1/2;
-                damage0=damage0*2;
+                combatdamage1=combatdamage1/2;
+                combatdamage0=combatdamage0*2;
                 msg=msg.concat(Docombat());
             }else if(type1==1){
-                damage1=damage1*2;
-                damage0=damage0/2;
+                combatdamage1=combatdamage1*2;
+                combatdamage0=combatdamage0/2;
                 msg=msg.concat(Docombat());
             }else {
                 msg=msg.concat(Docombat());
@@ -203,34 +220,70 @@ public class Fights {
             return msg;
     }
 
+    private void WOKWKSFD(String msgV,String msg){
+        if(cardname0.endsWith(msgV)&&cardname1.endsWith(msg)){
+            combatdamage1=0;
+            System.out.println("\nspecialties\n");
+        }else if (cardname0.endsWith(msg)&&cardname1.endsWith(msgV)){
+            combatdamage0=0;
+            System.out.println("\nspecialties\n");
+        }
+
+    }
+
+
+
+    private void DragonsGoblins(String msgV,String msg){
+        if(cardname0.endsWith(msgV)&&cardname1.endsWith(msg)){
+            combatdamage0=combatdamage0*2;
+
+        }else if (cardname0.endsWith(msg)&&cardname1.endsWith(msgV)){
+            combatdamage1=combatdamage1*2;
+
+        }
+
+    }
+
 
      private String Docombat(){
          String msg="";
 
-         if(damage0>damage1){
-             msg=msg.concat("user:("+user_0id+" "+user0name+") : "+cardname0+" ("+damage0+" Damage"+
+          WOKWKSFD("Wizzard","Ork");
+          WOKWKSFD("WaterSpell","Knight");
+          WOKWKSFD("Kraken","Spell");
+          WOKWKSFD("FireElf","Dragon");
+          DragonsGoblins("Dragon","Goblin");
+
+
+
+         if(combatdamage0>combatdamage1){
+             msg=msg.concat("\nuser:("+user_0id+" "+user0name+") : "+cardname0+" ("+damage0+" Damage"+
                      ") VS "+"user:("+user_1id+" "+user1name+") : "+cardname1+" ("+damage1+" Damage"+
-                     ") Rounds: "+currentrounds+" "+user0name+" wins : "+(damage0-damage1)+"("+stats.parsedamage((int)(damage0-damage1))+")\n");
-             int i=stats.pulsELO(user_0id,stats.parsedamage((int)(damage0-damage1)));
-             int n=stats.DeductionELO(user_1id,stats.parsedamage((int)(damage0-damage1)));
+                     ") Rounds: "+currentrounds+" "+user0name+" wins : "+combatdamage0+" VS "+combatdamage1+" : "+(combatdamage0-combatdamage1)+"("+stats.parsedamage((int)(combatdamage0-combatdamage1))+")\n");
+             int i=stats.pulsELO(user_0id,stats.parsedamage((int)(combatdamage0-combatdamage1)));
+             int n=stats.DeductionELO(user_1id,stats.parsedamage((int)(combatdamage0-combatdamage1)));
+             msg=msg.concat(getELO());
+
              if(n==-1){
                  rounds=rounds-rounds;
 
              }
-         }else if(damage0<damage1){
-             msg=msg.concat("user:("+user_0id+" "+user0name+") : "+cardname0+" ("+damage0+" Damage"+
+         }else if(combatdamage0<combatdamage1){
+             msg=msg.concat("\nuser:("+user_0id+" "+user0name+") : "+cardname0+" ("+damage0+" Damage"+
                      ") VS "+"user:("+user_1id+" "+user1name+") : "+cardname1+" ("+damage1+" Damage"+
-                     ") Rounds: "+currentrounds+" "+user1name+" wins : "+(damage1-damage0)+"("+stats.parsedamage((int)(damage1-damage0))+"\n");
-             int i=stats.pulsELO(user_1id,stats.parsedamage((int)(damage1-damage0)));
-             int n=stats.DeductionELO(user_0id,stats.parsedamage((int)(damage1-damage0)));
+                     ") Rounds: "+currentrounds+" "+user1name+" wins : "+combatdamage0+" VS "+combatdamage1+" : "+(combatdamage1-combatdamage0)+"("+stats.parsedamage((int)(combatdamage1-combatdamage0))+")\n");
+             int i=stats.pulsELO(user_1id,stats.parsedamage((int)(combatdamage1-combatdamage0)));
+             int n=stats.DeductionELO(user_0id,stats.parsedamage((int)(combatdamage1-combatdamage0)));
+             msg=msg.concat(getELO());
              if(n==-1){
                  rounds=rounds-rounds;
 
              }
          }else {
-             msg=msg.concat("user:("+user_0id+" "+user0name+") : "+cardname0+" ("+damage0+" Damage"+
+             msg=msg.concat("\nuser:("+user_0id+" "+user0name+") : "+cardname0+" ("+damage0+" Damage"+
                      ") VS "+"user:("+user_1id+" "+user1name+") : "+cardname1+" ("+damage1+" Damage"+
                      ") Rounds: "+currentrounds+"  Draw"+"\n");
+           msg=msg.concat(getELO());
          }
 
         return msg;

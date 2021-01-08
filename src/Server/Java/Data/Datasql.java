@@ -10,7 +10,7 @@ import java.util.logging.Level;
 
 public class Datasql {
 
-    public static ResultSet selectuser(String msgtoken){
+    private static ResultSet selectuser(String msgtoken){
         String sqlselectuser="select * from userinfor where basictoken= ?";
 
         ResultSet rst=GameData.Getsql(sqlselectuser,msgtoken);

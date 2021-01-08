@@ -6,14 +6,21 @@ public class main {
        String test;
        Scanner input= new Scanner(System.in);
 
+    Person lektor= new Person("test1","qqqq");
+    //Person student1=new Person("test2","2222");
+    //Person student2=new Person("test3","33333");
 
-        Console con=System.console();
+
+        System.out.println(true||false&&false);
+        //System.out.println(lektor.id);
+        /*Console con=System.console();
         System.out.println("username: ");
         String username=input.nextLine();
         System.out.println("password: ");
 
         String password=new String(con.readPassword());
-        System.out.println(username+"\n"+password);
+        System.out.println(username+"\n"+password);*/
+
 
 
 
