@@ -172,6 +172,7 @@ public class threadserver implements Runnable {
 
                else if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/battles")){
                         type="text/plain";
+                   System.out.println("\n test: "+type);
                         result=Datasql.inbattle(httpRequest.getHeaders().get("Authorization"));
                }
                else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/stats")){

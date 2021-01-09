@@ -76,6 +76,7 @@ public class Datasql implements SQL{
 
            ResultSet rst=battle.selectbattlefield();
 
+
          try {
             if(rstuser.next()){
 
