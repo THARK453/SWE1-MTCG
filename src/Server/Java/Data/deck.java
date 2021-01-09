@@ -52,7 +52,7 @@ public class deck implements SQL {
         String msg="[";
         JsonObject jsonObject0=new JsonObject();
        jsonObject0.addProperty("Message: "," user deck");
-        msg=msg.concat(jsonObject0.toString()+",\n\n");
+        msg=msg.concat(jsonObject0.toString()+",\n");
         JsonArray jsonArray = new JsonArray();
         try {
 
@@ -110,18 +110,13 @@ public class deck implements SQL {
 
 
     public static String showdeck(String urlmsg,String tokenmsg){
-        String msg="";
-        String formatmsg="";
 
+        String msg="\n[";
 
         String token= parse.gettoken(tokenmsg);
 
 
-        if(!urlmsg.equals("/deck")){
-            formatmsg=urlmsg.split("\\?")[1];
-            msg=msg.concat("\n\nformat test: "+formatmsg+" url: "+urlmsg);
 
-        }else {
             ResultSet rst= GameData.Getsql(user_selecttoken,token);
 
             try {
@@ -129,26 +124,62 @@ public class deck implements SQL {
                 if(rst.next()){
 
                     ResultSet rstdeck= GameData.Getsql(deck_selectuserid,rst.getInt("id"));
-                    msg=msg.concat("\n\n"+rst.getString("username")+" deck: \n");
+
+                    JsonObject jsonObject0 = new JsonObject();
+
+                    if(!urlmsg.equals("/deck")){
+                        String formatmsg=urlmsg.split("\\?")[1];
+                        msg="\nformat: "+formatmsg+"\n";
+                        msg=msg.concat("deck: "+rst.getString("username")+"\n");
+                    }else {
+                        jsonObject0.addProperty("Message", "deck-"+rst.getString("username"));
+
+                        msg=msg.concat(jsonObject0.toString()+",\n");
+                    }
+
+
 
                     if(rstdeck.isBeforeFirst()){
 
                         while (rstdeck.next()){
+
                             ResultSet rstcards= GameData.Getsql(cards_selectid,rstdeck.getString("card_id"));
                             while (rstcards.next()){
-                                msg=msg.concat(String.format("\n\nID: %s  name: %s  Damage: %.2f  packageid: %d\n",
-                                        rstcards.getString("id"),rstcards.getString("name"),rstcards.getFloat("damage"),rstcards.getInt("package_id")));
+
+                                if(!urlmsg.equals("/deck")){
+
+                                    msg = msg.concat(String.format("\n\nID: %s  name: %s  Damage: %.2f  packageid: %d\n",
+                                            rstcards.getString("id"), rstcards.getString("name"), rstcards.getFloat("damage"), rstcards.getInt("package_id")));
+
+                                }
+                                else {
+
+
+                                    JsonObject jsonObject = new JsonObject();
+
+                                    jsonObject.addProperty("Id", rstcards.getString("id"));
+                                    jsonObject.addProperty("name", rstcards.getString("name"));
+                                    jsonObject.addProperty("Damage", rstcards.getString("damage"));
+                                    jsonObject.addProperty("packageid", rstcards.getString("package_id"));
+
+                                    msg = msg.concat(jsonObject.toString() + ",\n");
+
+                                }
+
+
+
                             }
 
                         }
                     }else {
-                        msg=msg.concat("Is empty");
+
+                        msg=msg.concat("\n{\"Message\":\"Is empty\"}\n");
                     }
 
 
 
                 }else {
-                    msg=msg.concat("\n\nno user or Invalid Token");
+                    msg=msg.concat( "\n{\"Message\":\"no user or Invalid Token\"}\n");
                 }
 
             } catch (SQLException throwables) {
@@ -156,16 +187,16 @@ public class deck implements SQL {
             }
 
 
-        }
 
 
+        msg=parse.replaceLast(msg,",","]");
         return msg;
     }
 
 
 
     public static String configuredeck(List<String> messageList,String httpmsg){
-        String msg="";
+        String msg="\n";
         String token= parse.gettoken(httpmsg);
 
 
@@ -179,17 +210,22 @@ public class deck implements SQL {
 
                 if(rstcheckuser.next()){
 
-                    msg=msg.concat("\n\nUser already configure deck ");
+                    msg=msg.concat("\n{\"Message\":\"User already configure deck\"}\n");
                 }else {
 
                     for(int i=0;i<messageList.size();i++){
                         int n= GameData.Dosql(deck_insert,messageList.get(i),rstuser.getInt("id"));
                     }
-                    msg=msg.concat("\n\nconfigure deck user: "+rstuser.getString("username"));
+
+                    JsonObject jsonObject0 = new JsonObject();
+                    jsonObject0.addProperty("Message", "configure deck user: "+rstuser.getString("username"));
+                    msg=msg.concat(jsonObject0.toString()+"\n");
+
                 }
 
             }else {
-                msg=msg.concat("\n\nno user or Invalid Token");
+
+                msg=msg.concat(  "\n{\"Message\":\"no user or Invalid Token\"}\n");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

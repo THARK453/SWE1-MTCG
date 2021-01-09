@@ -27,8 +27,7 @@ class deckTest {
     @Test
     void setcardsmsg() {
         ResultSet rst=deck.selectdeck(1);
-        String msg=deck.testjson(rst);
-        System.out.println(msg);
+
         //String msg= jsonArray.toString();
         //System.out.println("\n"+msg);
     }

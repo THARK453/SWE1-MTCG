@@ -14,6 +14,7 @@ import java.net.*;
 import java.io.IOException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.mysql.management.util.Str;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,7 +26,7 @@ import com.google.gson.Gson;
 
 public class threadserver implements Runnable {
 
-
+    private String type="application/json";
     Socket s,s2;
     public threadserver(Socket s) {
         this.s=s;
@@ -81,7 +82,10 @@ public class threadserver implements Runnable {
                        int i=user.checkRegistration(jsonmsg);
 
                        if(i==1){
-                           result="\nuser "+jsonmsg.getUsername()+" already exists";
+                           JsonObject jsonObject = new JsonObject();
+                           jsonObject.addProperty("Message","user already exists: "+jsonmsg.getUsername());
+                           result=result.concat(jsonObject.toString()+"\n");
+
                        }else {
                            result=user.Registration(jsonmsg);
                        }
@@ -105,10 +109,11 @@ public class threadserver implements Runnable {
                        }*/
                        result=PackageData.createpackages(jsonmsgList);
                    }else if(check==2){
-                       result="\nadmin Not logged in";
-                   }else {
+                       result = "\n{\"Message\":\"admin Not logged in\"}\n";
 
-                       result="\nError Invalid Token or No admin found";
+                   }else {
+                       result = "\n{\"Message\":\"Error Invalid Token or No admin found\"}\n";
+
                    }
 
 
@@ -121,7 +126,8 @@ public class threadserver implements Runnable {
                    if(httpRequest.getHeaders().containsKey("Authorization")){
                        result=PackageData.acquirepackages(httpRequest.getHeaders().get("Authorization"));
                    }else {
-                       result="\nno token";
+                       result = "\n{\"Message\":\"no token\"}\n";
+
                    }
 
                }
@@ -130,13 +136,18 @@ public class threadserver implements Runnable {
                    if(httpRequest.getHeaders().containsKey("Authorization")){
                        result=Datasql.showacquired(httpRequest.getHeaders().get("Authorization"));
                    }else {
-                       result="\nno token";
+                       result = "\n{\"Message\":\"no token\"}\n";
+
                    }
 
                }
 
                else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().startsWith("/deck")){
-                          result=deck.showdeck(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"));
+                   if(!httpRequest.getUrl().startsWith("/deck")){
+                       type="text/plain";
+                   }
+                   System.out.println("test out!!");
+                   result=deck.showdeck(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"));
                }
 
                else if (httpRequest.getMethod().equals("PUT") && httpRequest.getUrl().equals("/deck")){
@@ -144,7 +155,8 @@ public class threadserver implements Runnable {
                    if(messageList.size()==4){
                        result=deck.configuredeck(messageList,httpRequest.getHeaders().get("Authorization"));
                    }else {
-                       result=result.concat("\nInvalid number of cards");
+
+                       result=result.concat("\n{\"Message\":\"Invalid number of cards\"}\n");
                    }
 
                }
@@ -159,6 +171,7 @@ public class threadserver implements Runnable {
                }
 
                else if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/battles")){
+                        type="text/plain";
                         result=Datasql.inbattle(httpRequest.getHeaders().get("Authorization"));
                }
                else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/stats")){
@@ -230,12 +243,12 @@ public class threadserver implements Runnable {
               else{
                    result = "{\"error\":\"no Method\"}";
                }
-               String httpRes = parse.buildResponse(httpRequest, result);
+               String httpRes = parse.buildResponse(httpRequest, result,type);
                out.print(httpRes);
 
            } catch (Exception e) {
 
-               String httpRes = parse.buildResponse(httpRequest, e.toString());
+               String httpRes = parse.buildResponse(httpRequest, e.toString(),type);
                out.print(httpRes);
 
            }

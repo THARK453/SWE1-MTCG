@@ -67,7 +67,7 @@ public class stats implements SQL{
     }
 
     public static String showstats(String httpmsg){
-        String msg="";
+        String msg="\n";
         String token=parse.gettoken(httpmsg);
 
         ResultSet rstuser=GameData.Getsql(user_selecttoken,token);
@@ -83,7 +83,7 @@ public class stats implements SQL{
                     jsonObject.addProperty("ELO", rststats.getString("ELO"));
                     jsonObject.addProperty("WIN", rststats.getString("win"));
                     jsonObject.addProperty("lose", rststats.getString("lose"));
-                    msg=msg.concat(jsonObject.toString()+",\n");
+                    msg=msg.concat(jsonObject.toString()+"\n");
 
                 }else {
                     JsonObject jsonObject = new JsonObject();
@@ -100,7 +100,7 @@ public class stats implements SQL{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        msg=parse.replaceLast(msg,",","");
+
         return msg;
     }
 }

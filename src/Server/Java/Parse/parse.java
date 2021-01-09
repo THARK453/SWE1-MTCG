@@ -74,14 +74,14 @@ public class parse {
 
 
 
-    public static String buildResponse(Request request, String response) {
+    public static String buildResponse(Request request, String response,String type) {
         Response httpResponse = new Response();
         httpResponse.setCode(200);
         httpResponse.setStatus("ok");
         httpResponse.setVersion(request.getVersion());
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "text/plain");
+        headers.put("Content-Type", type);
         headers.put("Content-Length", String.valueOf(response.getBytes().length));
         httpResponse.setHeaders(headers);
 

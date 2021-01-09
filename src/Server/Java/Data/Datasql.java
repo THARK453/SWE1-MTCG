@@ -3,6 +3,8 @@ import Cards.*;
 import Game.*;
 import Parse.*;
 import Server.*;
+import com.google.gson.JsonObject;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +16,7 @@ public class Datasql implements SQL{
 
 
    public static String showacquired(String httpmsg){
-        String msg="";
+        String msg="[";
         String token= parse.gettoken(httpmsg);
 
 
@@ -23,18 +25,34 @@ public class Datasql implements SQL{
        try {
            if(rst.next()){
                ResultSet rststack= GameData.Getsql(stack_selectuserid,rst.getInt("id"));
-               msg=msg.concat("\n\nacquired cards on: "+rst.getString("username"));
+               JsonObject jsonObject0 = new JsonObject();
+               jsonObject0.addProperty("Message", "acquired cards on: "+rst.getString("username"));
+               msg=msg.concat(jsonObject0.toString()+",\n");
+
+
                while (rststack.next()){
-                   ResultSet rstcards= GameData.Getsql(cards_selectid,rststack.getInt("card_id"));
+                   ResultSet rstcards= GameData.Getsql(cards_selectid,rststack.getString("card_id"));
                    while (rstcards.next()){
-                       msg=msg.concat(String.format("\n\nID: %s  name: %s  Damage: %.2f  packageid: %d\n",
-                               rstcards.getString("id"),rstcards.getString("name"),rstcards.getFloat("damage"),rstcards.getInt("package_id")));
+
+
+                       JsonObject jsonObject = new JsonObject();
+
+                       jsonObject.addProperty("Id", rstcards.getString("id"));
+                       jsonObject.addProperty("name", rstcards.getString("name"));
+                       jsonObject.addProperty("Damage", rstcards.getString("damage"));
+                       jsonObject.addProperty("packageid", rstcards.getString("package_id"));
+
+                       msg = msg.concat(jsonObject.toString() + ",\n");
+
+
+
                    }
 
                }
 
            }else {
-               msg=msg.concat("\n\nError Invalid Token");
+
+               msg=msg.concat("\n{\"Message\":\"Error Invalid Token\"}\n");
            }
 
 
@@ -42,7 +60,7 @@ public class Datasql implements SQL{
            throwables.printStackTrace();
        }
 
-
+       msg=parse.replaceLast(msg,",","]");
        return msg;
    }
 
@@ -51,7 +69,7 @@ public class Datasql implements SQL{
 
 
      public static String inbattle(String httpmsg){
-           String msg="";
+           String msg="\n";
            String token= parse.gettoken(httpmsg);
            ResultSet rstuser=GameData.Getsql(user_selecttoken,token);
 
@@ -74,7 +92,8 @@ public class Datasql implements SQL{
                         }
 
                     }else {
-                        msg=msg.concat("\n\nError");
+
+                        msg=msg.concat("\n{\"Message\":\"Error\"}\n");
                     }
 
                 }else {
@@ -90,16 +109,17 @@ public class Datasql implements SQL{
                             }
 
                         }else {
-                            msg=msg.concat("\n\nError");
+                            msg=msg.concat("\n{\"Message\":\"Error\"}\n");
                         }
                     }else {
-                        msg=msg.concat("\n\nError");
+                        msg=msg.concat("\n{\"Message\":\"Error\"}\n");
                     }
 
                 }
 
             }else {
-                msg=msg.concat("\n\nno user or Invalid Token");
+
+                msg=msg.concat("\n{\"Message\":\"no user or Invalid Token\"}\n");
             }
 
 

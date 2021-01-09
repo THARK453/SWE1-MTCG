@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class scoreboard implements SQL{
 
     public static String selectstats(String httpmsg){
-         String msg="[";
+         String msg="\n[";
 
         ResultSet rst= GameData.Getsql(stats_selectELO);
 

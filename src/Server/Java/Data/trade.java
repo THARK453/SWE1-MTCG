@@ -151,7 +151,7 @@ public class trade implements SQL{
                 }else {
                   int n=GameData.Dosql(stack_updateuserid,rstuser.getInt("id"),rsttrade.getString("card_id"));
                   int i=GameData.Dosql(stack_updateuserid,rsttrade.getInt("user_id"),tradcardid);
-                    System.out.println(" test: \n"+rsttrade.getInt("user_id")+"\n"+tradcardid);
+
                   if(n==1&&i==1){
                       JsonObject jsonObject = new JsonObject();
                       jsonObject.addProperty("Message","trade success");
