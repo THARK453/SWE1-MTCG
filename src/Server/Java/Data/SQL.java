@@ -100,6 +100,8 @@ public interface SQL {
 
     String stack_selectuserid_cardid="SELECT card_id, user_id FROM stack where user_id= ? and card_id= ?";
 
+    String stack_selectuserid="SELECT * FROM stack where user_id= ? ";
+
     String stack_updateuserid="UPDATE stack SET user_id=? WHERE card_id=?";
 
 }

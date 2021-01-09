@@ -48,13 +48,7 @@ public class ResultSetPrinter {
         printSeparator(columnMaxLengths);
     }
 
-    /**
-     * 输出列名.
-     *
-     * @param resultSetMetaData 结果集的元数据对象.
-     * @param columnMaxLengths  每一列最大长度的字符串的长度.
-     * @throws SQLException
-     */
+
     private static void printColumnName(ResultSetMetaData resultSetMetaData, int[] columnMaxLengths) throws SQLException {
         int columnCount = resultSetMetaData.getColumnCount();
         for (int i = 0; i < columnCount; i++) {
@@ -64,11 +58,7 @@ public class ResultSetPrinter {
         System.out.println("|");
     }
 
-    /**
-     * 输出分隔符.
-     *
-     * @param columnMaxLengths 保存结果集中每一列的最长的字符串的长度.
-     */
+
     private static void printSeparator(int[] columnMaxLengths) {
         for (int i = 0; i < columnMaxLengths.length; i++) {
             System.out.print("+");

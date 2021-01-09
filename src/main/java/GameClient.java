@@ -31,7 +31,7 @@ public class GameClient {
                 String msg=Requestbuilder.RequestLine("GET");
                 out.println(msg);
                 out.flush();
-
+                System.out.println(" \nStill under development \n");
             }
 
 

@@ -22,10 +22,10 @@ public class Datasql implements SQL{
 
        try {
            if(rst.next()){
-               ResultSet rstpackage= GameData.Getsql(package_selectuserid,rst.getInt("id"));
+               ResultSet rststack= GameData.Getsql(stack_selectuserid,rst.getInt("id"));
                msg=msg.concat("\n\nacquired cards on: "+rst.getString("username"));
-               while (rstpackage.next()){
-                   ResultSet rstcards= GameData.Getsql(cards_selectpackageid,rstpackage.getInt("id"));
+               while (rststack.next()){
+                   ResultSet rstcards= GameData.Getsql(cards_selectid,rststack.getInt("card_id"));
                    while (rstcards.next()){
                        msg=msg.concat(String.format("\n\nID: %s  name: %s  Damage: %.2f  packageid: %d\n",
                                rstcards.getString("id"),rstcards.getString("name"),rstcards.getFloat("damage"),rstcards.getInt("package_id")));
