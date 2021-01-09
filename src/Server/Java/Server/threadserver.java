@@ -146,7 +146,7 @@ public class threadserver implements Runnable {
                    if(!httpRequest.getUrl().startsWith("/deck")){
                        type="text/plain";
                    }
-                   System.out.println("test out!!");
+
                    result=deck.showdeck(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"));
                }
 

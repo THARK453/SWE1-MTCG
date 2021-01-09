@@ -74,11 +74,27 @@ public class Datasql implements SQL{
            ResultSet rstuser=GameData.Getsql(user_selecttoken,token);
 
 
-           ResultSet rst=battle.selectbattlefield();
+          // ResultSet rst=battle.selectbattlefield();
 
 
          try {
-            if(rstuser.next()){
+
+             if(rstuser.next()){
+                 msg=msg.concat("\n{\"Message\":\"User ->"+rstuser.getString("username")+" in battle\"}\n");
+                 ResultSet rstuser1=GameData.Getsql(user_select_others,rstuser.getInt("id"));
+                 if (rstuser1.next()){
+                     msg=msg.concat(battle.Startbattle(rstuser.getInt("id"),rstuser1.getInt("id")));
+                 }else {
+                     msg=msg.concat("\n{\"Message\":\"Error can't find user to battle\"}\n");
+                 }
+
+             }else {
+                 msg=msg.concat("\n{\"Message\":\"no user or Invalid Token\"}\n");
+             }
+
+
+
+           /* if(rstuser.next()){
 
                 if(rst.next()){
                     int i=GameData.Dosql(user_inbattle,rst.getInt("id"),rstuser.getInt("id"));
@@ -117,7 +133,7 @@ public class Datasql implements SQL{
             }else {
 
                 msg=msg.concat("\n{\"Message\":\"no user or Invalid Token\"}\n");
-            }
+            }*/
 
 
 

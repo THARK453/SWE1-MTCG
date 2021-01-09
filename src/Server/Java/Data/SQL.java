@@ -25,12 +25,14 @@ public interface SQL {
     String user_inbattle="update userinfor set battlefield_id =? where id = ?";
 
     String user_outbattlefield="UPDATE userinfor SET battlefield_id=null WHERE battlefield_id= ?";
+
+    String user_select_others="SELECT * FROM userinfor where id!=? and username!='admin' Order By random() Limit 1";
     //usersql
 
     //statssql
     String stats_insert="INSERT INTO stats  VALUES (?, ?, ?, ?)";
 
-    String stats_selectELO="select * from stats where \"ELO\"<=100 ORDER BY win DESC";
+    String stats_selectELO="select * from stats where \"ELO\"<999999999 ORDER BY \"ELO\" DESC";
 
     String stats_setELO100_id="UPDATE stats SET \"ELO\"=100 WHERE user_id=?";
 
@@ -83,6 +85,12 @@ public interface SQL {
     String battlefield_inbattle="update battlefield set status ='inbattle' where id = ?";
 
     String battlefield_Available="update battlefield set status ='Available' where id = ?";
+
+    String battlefield_insert="insert into battlefield (id) values (?)";
+
+    String battlefield_select="SELECT * FROM battlefield";
+
+    String battlefield_delete="DELETE FROM battlefield WHERE id= ?";
     //battlefieldsql
 
     //tradesql

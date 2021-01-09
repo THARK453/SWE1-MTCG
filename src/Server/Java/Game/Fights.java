@@ -2,6 +2,7 @@ package Game;
 import Data.*;
 import Cards.Cards;
 import Parse.parse;
+import com.google.gson.JsonObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +18,8 @@ public class Fights implements SQL{
     private int currentrounds;
     private String user0name;
     private String user1name;
+    private int Score0;
+    private int Score1;
     private float damage0;
     private float damage1;
     private float combatdamage0;
@@ -72,36 +75,33 @@ public class Fights implements SQL{
         this.user1card = user1card;
         this.user_0id = user_0id;
         this.user_1id = user_1id;
+        this.Score0=100;
+        this.Score1=100;
         this.rounds = rounds;
         this.currentrounds=0;
-        ResultSet rst=GameData.Getsql(user_selectid,user_0id);
+        ResultSet rst0=GameData.Getsql(user_selectid,user_0id);
+        ResultSet rst1=GameData.Getsql(user_selectid,user_1id);
         try {
-            if(rst.next()){
-                this.user0name=rst.getString("username");
+            if(rst0.next()){
+                this.user0name=rst0.getString("username");
             }
 
-            rst=GameData.Getsql(user_selectid,user_1id);
-            if(rst.next()){
-                this.user1name=rst.getString("username");
+
+            if(rst1.next()){
+                this.user1name=rst1.getString("username");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public String getELO(){
+    public String getScore(){
         String msg="";
-        ResultSet rst0=stats.getstats(user_0id);
-        ResultSet rst1=stats.getstats(user_1id);
-        try {
-            rst0.next();
-            rst1.next();
-            msg=msg.concat("  user:("+user_0id+" "+user0name+") ELO: "+rst0.getInt("ELO"));
-            msg=msg.concat("\n user:("+user_1id+" "+user1name+") ELO: "+rst1.getInt("ELO")+"\n");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    return msg;
+
+            msg=msg.concat("  user:("+user_0id+" "+user0name+") Score: "+Score0);
+            msg=msg.concat("\n user:("+user_1id+" "+user1name+") Score: "+Score1+"\n");
+
+        return msg;
     }
 
     public String Startfight(){
@@ -119,33 +119,30 @@ public class Fights implements SQL{
             result=result.concat("\n\n reshuffle\n\n");
         }
 
-        ResultSet rst0=stats.getstats(user_0id);
-        ResultSet rst1=stats.getstats(user_1id);
-        try {
-            rst0.next();
-            rst1.next();
-            if (rst0.getInt("ELO")>rst1.getInt("ELO")){
-                result=result.concat("\n user:("+user_0id+" "+user0name+") wins ELO: "+rst0.getInt("ELO"));
-                result=result.concat("\n user:("+user_1id+" "+user1name+") lose ELO: "+rst1.getInt("ELO"));
+
+
+            if (Score0>Score1){
+                result=result.concat("\n user:("+user_0id+" "+user0name+") wins Score: "+Score0);
+                result=result.concat("\n user:("+user_1id+" "+user1name+") lose Score: "+Score1);
                 stats.winpuls(user_0id);
+                stats.pulsELO(user_0id);
                 stats.losepuls(user_1id);
-            }else if(rst0.getInt("ELO")<rst1.getInt("ELO")){
-                result=result.concat("\n user:("+user_1id+" "+user1name+") wins ELO: "+rst1.getInt("ELO"));
-                result=result.concat("\n user:("+user_0id+" "+user0name+") lose ELO: "+rst0.getInt("ELO"));
+                stats.DeductionELO(user_1id);
+            }else if(Score0<Score1){
+                result=result.concat("\n user:("+user_1id+" "+user1name+") wins Score: "+Score1);
+                result=result.concat("\n user:("+user_0id+" "+user0name+") lose Score: "+Score0);
                 stats.winpuls(user_1id);
+                stats.pulsELO(user_1id);
                 stats.losepuls(user_0id);
+                stats.DeductionELO(user_0id);
             }else {
-                result=result.concat("\n user:("+user_0id+" "+user0name+") ELO: "+rst0.getInt("ELO"));
-                result=result.concat("\n user:("+user_1id+" "+user1name+") ELO: "+rst1.getInt("ELO"));
+                result=result.concat("\n user:("+user_0id+" "+user0name+") Score: "+Score0);
+                result=result.concat("\n user:("+user_1id+" "+user1name+") Score: "+Score1);
             }
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
-        result=result.concat(" \n\nfight end rounds: "+currentrounds);
-         stats.resetELO(user_0id);
-         stats.resetELO(user_1id);
+
+        result=result.concat(" \n\nfight end rounds: "+currentrounds+"\n");
         return result;
     }
 
@@ -260,30 +257,35 @@ public class Fights implements SQL{
              msg=msg.concat("\nuser:("+user_0id+" "+user0name+") : "+cardname0+" ("+damage0+" Damage"+
                      ") VS "+"user:("+user_1id+" "+user1name+") : "+cardname1+" ("+damage1+" Damage"+
                      ") Rounds: "+currentrounds+" "+user0name+" wins : "+combatdamage0+" VS "+combatdamage1+" : "+(combatdamage0-combatdamage1)+"("+stats.parsedamage((int)(combatdamage0-combatdamage1))+")\n");
-             int i=stats.pulsELO(user_0id,stats.parsedamage((int)(combatdamage0-combatdamage1)));
-             int n=stats.DeductionELO(user_1id,stats.parsedamage((int)(combatdamage0-combatdamage1)));
-             msg=msg.concat(getELO());
+              int x=stats.parsedamage((int)(combatdamage0-combatdamage1));
+              Score0=Score0+x;
+              Score1=Score1-x;
+              msg=msg.concat(getScore());
 
-             if(n==-1){
-                 rounds=rounds-rounds;
+                if(Score1<=0){
+                    rounds=rounds-rounds;
+                }
 
-             }
+
          }else if(combatdamage0<combatdamage1){
              msg=msg.concat("\nuser:("+user_0id+" "+user0name+") : "+cardname0+" ("+damage0+" Damage"+
                      ") VS "+"user:("+user_1id+" "+user1name+") : "+cardname1+" ("+damage1+" Damage"+
                      ") Rounds: "+currentrounds+" "+user1name+" wins : "+combatdamage0+" VS "+combatdamage1+" : "+(combatdamage1-combatdamage0)+"("+stats.parsedamage((int)(combatdamage1-combatdamage0))+")\n");
-             int i=stats.pulsELO(user_1id,stats.parsedamage((int)(combatdamage1-combatdamage0)));
-             int n=stats.DeductionELO(user_0id,stats.parsedamage((int)(combatdamage1-combatdamage0)));
-             msg=msg.concat(getELO());
-             if(n==-1){
-                 rounds=rounds-rounds;
+             int x=stats.parsedamage((int)(combatdamage1-combatdamage0));
+             Score0=Score0-x;
+             Score1=Score1+x;
+             msg=msg.concat(getScore());
 
+             if(Score0<=0){
+                 rounds=rounds-rounds;
              }
+
+
          }else {
              msg=msg.concat("\nuser:("+user_0id+" "+user0name+") : "+cardname0+" ("+damage0+" Damage"+
                      ") VS "+"user:("+user_1id+" "+user1name+") : "+cardname1+" ("+damage1+" Damage"+
                      ") Rounds: "+currentrounds+"  Draw"+"\n");
-           msg=msg.concat(getELO());
+           msg=msg.concat(getScore());
          }
 
         return msg;

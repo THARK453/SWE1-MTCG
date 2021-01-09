@@ -1,5 +1,7 @@
 package Game;
 
+import Data.GameData;
+import Data.SQL;
 import org.junit.jupiter.api.Test;
 
 import java.sql.ResultSet;
@@ -7,7 +9,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class battleTest {
+class battleTest implements SQL {
 
     @Test
     void createbattlefield() {
@@ -52,7 +54,7 @@ class battleTest {
 
     @Test
     void checkbattlefield() {
-        int i=battle.checkbattlefield(1);
+        int i=battle.checkbattlefield();
         System.out.println(" test: -> "+i);
     }
 
@@ -71,8 +73,8 @@ class battleTest {
 
     @Test
     void Startbattle(){
-        ResultSet rstbattle=battle.getbattlefielduser(1);
-        String msg=battle.Startbattle(rstbattle);
+        ResultSet rstbattle= GameData.Getsql(battlefield_select);
+        String msg=battle.Startbattle(1,2);
         System.out.println(msg);
 
     }

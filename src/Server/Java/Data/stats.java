@@ -25,10 +25,10 @@ public class stats implements SQL{
         GameData.Dosql(stats_setELO100_id,id);
     }
 
-    public static int pulsELO(int id,int damage){
+    public static int pulsELO(int id){
 
 
-          int i= GameData.Dosql(stats_updateELO_id,damage,id);
+          int i= GameData.Dosql(stats_updateELO_id,3,id);
       return i;
     }
 
@@ -40,9 +40,9 @@ public class stats implements SQL{
 
 
 
-    public static int DeductionELO(int id,int damage){
+    public static int DeductionELO(int id){
 
-        int i=GameData.Dosql(stats_updateELO_id,-damage,id);
+        int i=GameData.Dosql(stats_updateELO_id,-5,id);
         ResultSet rst=getstats(id);
         try {
             if(rst.next()&&rst.getInt("ELO")<=0){

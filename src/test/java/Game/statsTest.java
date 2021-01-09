@@ -10,7 +10,7 @@ class statsTest {
 
     @Test
     void pulsELO() {
-        int i= stats.pulsELO(1,9);
+        int i= stats.pulsELO(1);
         if(i!=0){
             ResultSet rst=stats.getstats(1);
             try {
@@ -32,7 +32,7 @@ class statsTest {
 
     @Test
     void deductionELO() {
-        int i=stats.DeductionELO(1,19);
+        int i=stats.DeductionELO(1);
         ResultSet rst=stats.getstats(1);
         try {
             if(rst.next()){
