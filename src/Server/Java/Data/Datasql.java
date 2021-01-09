@@ -104,11 +104,7 @@ public class Datasql implements SQL{
                         int i=GameData.Dosql(user_inbattle,rstbattlefield.getInt("id"),rstuser.getInt("id"));
                         if(i==1){
                             msg=msg.concat("\n\nuser: "+rstuser.getString("username")+" in battlefield : "+rstbattlefield.getInt("id"));
-                            int check=battle.checkbattlefield(rstbattlefield.getInt("id"));
-                            if(check>=2){
-                                int n=battle.inbattlethebattlefield(rstbattlefield.getInt("id"));
-                            }
-
+                            System.out.println("\ntest: new battle");
                         }else {
                             msg=msg.concat("\n{\"Message\":\"Error\"}\n");
                         }
