@@ -25,9 +25,8 @@ public class Data {
             String sql="select * from userinfor";
            // String sql="INSERT INTO userinfor  values(2, 'user2','test2')";
             ResultSet rs=mystm.executeQuery(sql);
-            ResultSetMetaData md = rs.getMetaData();
-            int columnsNumber = md.getColumnCount();
-            List list = new ArrayList();
+           ;
+            /*List list = new ArrayList();
 
             while (rs.next()) {
                 list.add(rs.getInt("id"));
@@ -35,8 +34,8 @@ public class Data {
             Map rowData = new HashMap();//声明Map
             for (int i = 1; i <= columnsNumber; i++) {
                 rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
-            }
-            System.out.println(list.get(0));
+            }*/
+            ResultSetPrinter.printResultSet(rs);
 
 
 
