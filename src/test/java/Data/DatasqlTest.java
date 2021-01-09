@@ -38,8 +38,8 @@ class DatasqlTest {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        Datasql.configuredeck(list1,"Basic kienboec-mtcgToken");
-        Datasql.configuredeck(list2,"Basic altenhof-mtcgToken");
+        deck.configuredeck(list1,"Basic kienboec-mtcgToken");
+        deck.configuredeck(list2,"Basic altenhof-mtcgToken");
 
 
     }

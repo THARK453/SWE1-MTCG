@@ -1,17 +1,13 @@
 package Game;
 import Data.*;
-import Game.*;
 import Cards.Cards;
 import Parse.parse;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class Fights {
+public class Fights implements SQL{
 
     private List<Cards>  user0card;
     private List<Cards>  user1card;
@@ -78,13 +74,13 @@ public class Fights {
         this.user_1id = user_1id;
         this.rounds = rounds;
         this.currentrounds=0;
-        ResultSet rst=user.selectuserbyID(user_0id);
+        ResultSet rst=GameData.Getsql(user_selectid,user_0id);
         try {
             if(rst.next()){
                 this.user0name=rst.getString("username");
             }
 
-            rst=user.selectuserbyID(user_1id);
+            rst=GameData.Getsql(user_selectid,user_1id);
             if(rst.next()){
                 this.user1name=rst.getString("username");
             }
@@ -113,9 +109,9 @@ public class Fights {
 
 
         while (rounds>0){
-            List<Integer> Rnumer0= parse.getRandomNumList(20,0,20);
-            List<Integer> Rnumer1=parse.getRandomNumList(20,0,20);
-            for(int i=0;i<20;i++){
+            List<Integer> Rnumer0= parse.getRandomNumList(4,0,4);
+            List<Integer> Rnumer1=parse.getRandomNumList(4,0,4);
+            for(int i=0;i<4;i++){
                 if (rounds>0){
                    result=result.concat(combat(Rnumer0.get(i),Rnumer1.get(i)));
                 }
@@ -131,9 +127,13 @@ public class Fights {
             if (rst0.getInt("ELO")>rst1.getInt("ELO")){
                 result=result.concat("\n user:("+user_0id+" "+user0name+") wins ELO: "+rst0.getInt("ELO"));
                 result=result.concat("\n user:("+user_1id+" "+user1name+") lose ELO: "+rst1.getInt("ELO"));
+                stats.winpuls(user_0id);
+                stats.losepuls(user_1id);
             }else if(rst0.getInt("ELO")<rst1.getInt("ELO")){
                 result=result.concat("\n user:("+user_1id+" "+user1name+") wins ELO: "+rst1.getInt("ELO"));
                 result=result.concat("\n user:("+user_0id+" "+user0name+") lose ELO: "+rst0.getInt("ELO"));
+                stats.winpuls(user_1id);
+                stats.losepuls(user_0id);
             }else {
                 result=result.concat("\n user:("+user_0id+" "+user0name+") ELO: "+rst0.getInt("ELO"));
                 result=result.concat("\n user:("+user_1id+" "+user1name+") ELO: "+rst1.getInt("ELO"));
@@ -223,10 +223,10 @@ public class Fights {
     private void WOKWKSFD(String msgV,String msg){
         if(cardname0.endsWith(msgV)&&cardname1.endsWith(msg)){
             combatdamage1=0;
-            System.out.println("\nspecialties\n");
+
         }else if (cardname0.endsWith(msg)&&cardname1.endsWith(msgV)){
             combatdamage0=0;
-            System.out.println("\nspecialties\n");
+
         }
 
     }

@@ -1,7 +1,5 @@
 package Game;
 import Cards.*;
-import Parse.*;
-import Server.*;
 import Data.*;
 import com.google.gson.JsonArray;
 import org.junit.jupiter.api.Test;
@@ -9,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class deckTest {
 
@@ -31,10 +27,10 @@ class deckTest {
     @Test
     void setcardsmsg() {
         ResultSet rst=deck.selectdeck(1);
-        JsonArray jsonArray=deck.setcardsmsg(rst);
-        System.out.println(jsonArray);
-        String msg= jsonArray.toString();
-        System.out.println("\n"+msg);
+        String msg=deck.testjson(rst);
+        System.out.println(msg);
+        //String msg= jsonArray.toString();
+        //System.out.println("\n"+msg);
     }
 
     @Test

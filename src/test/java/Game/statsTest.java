@@ -1,17 +1,16 @@
 package Game;
 
+import Data.stats;
 import org.junit.jupiter.api.Test;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class statsTest {
 
     @Test
     void pulsELO() {
-        int i=stats.pulsELO(1,9);
+        int i= stats.pulsELO(1,9);
         if(i!=0){
             ResultSet rst=stats.getstats(1);
             try {

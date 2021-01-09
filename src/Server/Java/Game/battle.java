@@ -1,50 +1,45 @@
 package Game;
-import Parse.*;
-import Server.*;
 import Data.*;
 import Cards.*;
-import smetana.core.__array_of_double__;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
-public class battle {
+public class battle implements SQL{
 
     public static void createbattlefield(){
-        String sql="insert into battlefield (status) values ('Available')";
-        GameData.Dosql(sql);
+        //String sql="insert into battlefield (status) values ('Available')";
+        GameData.Dosql(battlefield_insert_Available);
     }
 
     public static ResultSet selectbattlefield(){
-        String sql="SELECT * FROM battlefield Where status ='Available' ORDER BY id LIMIT 1";
+        //String sql="SELECT * FROM battlefield Where status ='Available' ORDER BY id LIMIT 1";
 
-        ResultSet rst=GameData.Getsql(sql);
+        ResultSet rst=GameData.Getsql(battlefield_selectAvailable);
 
         return rst;
     }
 
     public static int inbattlethebattlefield(int id){
-        String sql="update battlefield set status ='inbattle' where id = ?";
-        int i=GameData.Dosql(sql,id);
+        //String sql="update battlefield set status ='inbattle' where id = ?";
+        int i=GameData.Dosql(battlefield_inbattle,id);
         return i;
     }
 
     public static int Availablethebattlefield(int id){
-        String sql="update battlefield set status ='Available' where id = ?";
-        String sql1="UPDATE userinfor SET battlefield_id=null WHERE battlefield_id= ?";
-        int i=GameData.Dosql(sql,id);
-        int n=GameData.Dosql(sql1,id);
+        //String sql="update battlefield set status ='Available' where id = ?";
+        //String sql1="UPDATE userinfor SET battlefield_id=null WHERE battlefield_id= ?";
+        int i=GameData.Dosql(battlefield_Available,id);
+        int n=GameData.Dosql(user_outbattlefield,id);
         return i;
     }
 
 
     public static int checkbattlefield(int id){
-         String sql="select * from userinfor where battlefield_id= ?";
-         ResultSet rst=GameData.Getsql(sql,id);
+         //String sql="select * from userinfor where battlefield_id= ?";
+         ResultSet rst=GameData.Getsql(user_selectbattlefield_id,id);
          int i=0;
 
             try {
@@ -59,8 +54,8 @@ public class battle {
     }
 
       public static ResultSet getbattlefielduser(int id){
-          String sql="select * from userinfor where battlefield_id= ?";
-          ResultSet rst=GameData.Getsql(sql,id);
+          //String sql="select * from userinfor where battlefield_id= ?";
+          ResultSet rst=GameData.Getsql(user_selectbattlefield_id,id);
 
         return rst;
       }

@@ -36,43 +36,6 @@ public class threadserver implements Runnable {
     public void run() {
        try {
 
-             /*  BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                String message;
-                String tmsg;
-
-
-                do {
-
-                    tmsg = reader.readLine();
-                    message=tmsg;
-                    if(message!=null ){
-                        System.out.println("srv: received:-- " + message);
-                    }
-
-                } while (message!=null && !message.isEmpty());*/
-          /* BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s2.getOutputStream()));
-           writer.write("connect to server!");
-           writer.newLine();
-           writer.flush();*/
-
-          /* String msg="connect to server!";
-           PrintStream out = new PrintStream(s.getOutputStream());
-           out.println(msg);
-           out.flush();*/
-
-
-         // BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
-
-           /*Scanner scan=new Scanner(new InputStreamReader(s.getInputStream()));
-           while (scan.hasNextLine()){
-               System.out.println(scan.nextLine());
-           }*/
-
-
-          // System.out.println("thread start");
-           /*Data.Data.GameData gameData=new Data.Data.GameData();
-           gameData.connect();*/
-
 
            Request httpRequest = parse.parserequest(s.getInputStream());
 
@@ -115,33 +78,32 @@ public class threadserver implements Runnable {
 
                        Jsonmsg jsonmsg=parse.getjson(httpRequest.getMessage());
                        jsonmsg.setToken(jsonmsg.getUsername()+"-mtcgToken");
-                       int i=Datasql.checkRegistration(jsonmsg);
+                       int i=user.checkRegistration(jsonmsg);
 
                        if(i==1){
                            result="\nuser "+jsonmsg.getUsername()+" already exists";
                        }else {
-                           result=Datasql.Registration(jsonmsg);
+                           result=user.Registration(jsonmsg);
                        }
 
 
-                   //result="\nRegistration done username: "+jsonmsg.getUsername()+" password: "+jsonmsg.getPassword();
 
                }
 
                else if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/sessions")){
                       Jsonmsg jsonmsg=parse.getjson(httpRequest.getMessage());
-                      result=Datasql.Login(jsonmsg);
+                      result=user.Login(jsonmsg);
                }
 
                else if (httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/packages")){
-                   int check=Datasql.checkadmin(httpRequest.getHeaders().get("Authorization"));
+                   int check=user.checkadmin(httpRequest.getHeaders().get("Authorization"));
                    if(check==1){
-                       //List<Jsonmsg> jsonmsgList=parse.getjsonlist(httpRequest.getMessage());
+                       List<Jsonmsg> jsonmsgList=parse.getjsonlist(httpRequest.getMessage());
                        /*for(int n=0;n<jsonmsgList.size();n++){
                            result=result.concat("\nID: "+jsonmsgList.get(n).getId()+" name: "+jsonmsgList.get(n).getName()
                                    +" Damage: "+jsonmsgList.get(n).getDamage()+"\n");
                        }*/
-                       //result=Datasql.createpackages(jsonmsgList);
+                       result=PackageData.createpackages(jsonmsgList);
                    }else if(check==2){
                        result="\nadmin Not logged in";
                    }else {
@@ -150,14 +112,14 @@ public class threadserver implements Runnable {
                    }
 
 
-                   //result=Data.Data.Datasql.createpackages(jsonmsgList);
+                  // result=Data.Data.Datasql.createpackages(jsonmsgList);
 
 
                }
 
                else if (httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/transactions/packages")){
                    if(httpRequest.getHeaders().containsKey("Authorization")){
-                       result=Datasql.acquirepackages(httpRequest.getHeaders().get("Authorization"));
+                       result=PackageData.acquirepackages(httpRequest.getHeaders().get("Authorization"));
                    }else {
                        result="\nno token";
                    }
@@ -174,13 +136,13 @@ public class threadserver implements Runnable {
                }
 
                else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().startsWith("/deck")){
-                          result=Datasql.showdeck(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"));
+                          result=deck.showdeck(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"));
                }
 
                else if (httpRequest.getMethod().equals("PUT") && httpRequest.getUrl().equals("/deck")){
                    List<String> messageList=parse.getnokeyjsonlist(httpRequest.getMessage());
                    if(messageList.size()==4){
-                       result=Datasql.configuredeck(messageList,httpRequest.getHeaders().get("Authorization"));
+                       result=deck.configuredeck(messageList,httpRequest.getHeaders().get("Authorization"));
                    }else {
                        result=result.concat("\nInvalid number of cards");
                    }
@@ -188,17 +150,39 @@ public class threadserver implements Runnable {
                }
 
                else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().startsWith("/users")){
-                                 result=Datasql.getusers(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"));
+                                 result=user.getusers(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"));
                }
 
                else if(httpRequest.getMethod().equals("PUT") && httpRequest.getUrl().startsWith("/users")){
                    Jsonmsg jsonmsg=parse.getjson(httpRequest.getMessage());
-                   result=Datasql.edituser(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"),jsonmsg);
+                   result=user.edituser(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"),jsonmsg);
                }
 
                else if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/battles")){
                         result=Datasql.inbattle(httpRequest.getHeaders().get("Authorization"));
                }
+               else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/stats")){
+                   result=stats.showstats(httpRequest.getHeaders().get("Authorization"));
+               }
+               else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/score")){
+                   result=scoreboard.selectstats(httpRequest.getHeaders().get("Authorization"));
+               }
+               else if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/tradings")){
+                   result=trade.gettrade(httpRequest.getHeaders().get("Authorization"));
+               }
+               else if(httpRequest.getMethod().equals("POST") && httpRequest.getUrl().equals("/tradings")){
+                   Jsonmsg jsonmsg=parse.getjson(httpRequest.getMessage());
+                   System.out.println("test: \n"+jsonmsg);
+                   result=trade.addtrade(jsonmsg,httpRequest.getHeaders().get("Authorization"));
+               }
+               else if(httpRequest.getMethod().equals("DELETE") && httpRequest.getUrl().startsWith("/tradings")){
+                   result=trade.deletetrading(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"));
+               }
+               else if(httpRequest.getMethod().equals("POST") && !httpRequest.getUrl().equals("/tradings") && httpRequest.getUrl().startsWith("/tradings")){
+                    result=trade.dotrade(httpRequest.getUrl(),httpRequest.getHeaders().get("Authorization"),httpRequest.getMessage());
+               }
+
+
 
              /* if(httpRequest.getMethod().equals("GET") && httpRequest.getUrl().equals("/Parse.messages")){
                   System.out.println("showmessages");

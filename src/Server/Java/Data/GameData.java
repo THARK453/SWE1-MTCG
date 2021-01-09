@@ -1,4 +1,5 @@
 package Data;
+import Cards.*;
 import Game.*;
 import Parse.*;
 import Server.*;

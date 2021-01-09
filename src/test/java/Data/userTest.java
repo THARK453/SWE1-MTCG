@@ -15,13 +15,6 @@ class userTest {
 
     @Test
     void selectuserbyID() {
-        ResultSet rst=user.selectuserbyID(1);
-        try {if(rst.next()){
-            System.out.println(rst.getString("username"));
-        }
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
     }
 }

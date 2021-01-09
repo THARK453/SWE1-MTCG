@@ -178,5 +178,10 @@ public class parse {
         return list;
     }
 
+    public static String replaceLast(String text, String strToReplace, String replaceWithThis) {
+        return text.replaceFirst("(?s)" + strToReplace + "(?!.*?" + strToReplace + ")", replaceWithThis);
+    }
+
+
 
 }
