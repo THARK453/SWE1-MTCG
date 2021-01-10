@@ -12,8 +12,8 @@ class DatasqlTest {
 
     @Test
     void inbattle() {
-        String rst=Datasql.inbattle("Basic kienboec-mtcgToken");
-        //String rst=Datasql.inbattle("Basic altenhof-mtcgToken");
+       String rst=Datasql.inbattle("Basic kienboec-mtcgToken");
+        String rst1=Datasql.inbattle("Basic altenhof-mtcgToken");
 
         System.out.println(rst);
     }

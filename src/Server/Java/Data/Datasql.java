@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class Datasql implements SQL{
-
+    volatile int lock=0;
 
 
    public static String showacquired(String httpmsg){
@@ -68,18 +68,25 @@ public class Datasql implements SQL{
 
 
 
-     public static String inbattle(String httpmsg){
-           String msg="\n";
+     public synchronized static String inbattle(String httpmsg){
+
+         System.out.println("battle");
+         try {
+             Thread.sleep(1000);
+         } catch (InterruptedException e) {
+             e.printStackTrace();
+         }
+         String msg="\n";
            String token= parse.gettoken(httpmsg);
            ResultSet rstuser=GameData.Getsql(user_selecttoken,token);
 
 
-          // ResultSet rst=battle.selectbattlefield();
+         ResultSet rst=battle.selectbattlefield();
 
 
          try {
 
-             if(rstuser.next()){
+            /* if(rstuser.next()){
                  msg=msg.concat("\n{\"Message\":\"User ->"+rstuser.getString("username")+" in battle\"}\n");
                  ResultSet rstuser1=GameData.Getsql(user_select_others,rstuser.getInt("id"));
                  if (rstuser1.next()){
@@ -90,21 +97,21 @@ public class Datasql implements SQL{
 
              }else {
                  msg=msg.concat("\n{\"Message\":\"no user or Invalid Token\"}\n");
-             }
+             }*/
 
 
 
-           /* if(rstuser.next()){
+            if(rstuser.next()){
 
                 if(rst.next()){
                     int i=GameData.Dosql(user_inbattle,rst.getInt("id"),rstuser.getInt("id"));
                     if(i==1){
                         msg=msg.concat("\n\nuser: "+rstuser.getString("username")+" in battlefield : "+rst.getInt("id"));
-                        int check=battle.checkbattlefield(rst.getInt("id"));
+                        int check=battle.checkbattlefield_id(rst.getInt("id"));
                         if(check>=2){
                             int n=battle.inbattlethebattlefield(rst.getInt("id"));
                             ResultSet rstbattle=battle.getbattlefielduser(rst.getInt("id"));
-                             msg=msg.concat(battle.Startbattle(rstbattle));
+                             msg=msg.concat(battle.Startbattle_rst(rstbattle));
                              battle.Availablethebattlefield(rst.getInt("id"));
                         }
 
@@ -115,6 +122,7 @@ public class Datasql implements SQL{
 
                 }else {
                     battle.createbattlefield();
+
                     ResultSet rstbattlefield=battle.selectbattlefield();
                     if(rstbattlefield.next()){
                         int i=GameData.Dosql(user_inbattle,rstbattlefield.getInt("id"),rstuser.getInt("id"));
@@ -133,7 +141,7 @@ public class Datasql implements SQL{
             }else {
 
                 msg=msg.concat("\n{\"Message\":\"no user or Invalid Token\"}\n");
-            }*/
+            }
 
 
 
@@ -141,6 +149,10 @@ public class Datasql implements SQL{
          } catch (SQLException throwables) {
              throwables.printStackTrace();
          }
+
+
+
+
 
          return msg;
      }

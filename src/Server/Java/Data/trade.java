@@ -37,7 +37,7 @@ public class trade implements SQL{
                 jsonObject.addProperty("user_Id", rst.getString("user_id"));
                 jsonObject.addProperty("username", rst.getString("username"));
                 jsonObject.addProperty("card", rst.getString("card_id"));
-                jsonObject.addProperty("type", rst.getString("type"));
+                jsonObject.addProperty("want to trade type", rst.getString("type"));
                 jsonObject.addProperty("MinDamage", rst.getString("MinimumDamage"));
                 msg=msg.concat(jsonObject.toString()+",\n");
 
