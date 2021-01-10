@@ -71,11 +71,11 @@ public class Datasql implements SQL{
      public synchronized static String inbattle(String httpmsg){
 
          System.out.println("battle");
-         try {
+         /*try {
              Thread.sleep(1000);
          } catch (InterruptedException e) {
              e.printStackTrace();
-         }
+         }*/
          String msg="\n";
            String token= parse.gettoken(httpmsg);
            ResultSet rstuser=GameData.Getsql(user_selecttoken,token);
@@ -83,6 +83,17 @@ public class Datasql implements SQL{
 
          ResultSet rst=battle.selectbattlefield();
 
+         /**
+          *
+          *
+          *Here I wrote two methods to execute the battle The marked part is to execute two battles at the same time when echo 17) battle.
+          *The program will choose a random player to play against for incoming players.
+          *
+          *
+          *
+          *
+          *Another methods is to let a player enter an available battlefield and wait for other players to join
+          */
 
          try {
 
@@ -128,7 +139,7 @@ public class Datasql implements SQL{
                         int i=GameData.Dosql(user_inbattle,rstbattlefield.getInt("id"),rstuser.getInt("id"));
                         if(i==1){
                             msg=msg.concat("\n\nuser: "+rstuser.getString("username")+" in battlefield : "+rstbattlefield.getInt("id"));
-                            System.out.println("\ntest: new battle");
+                            System.out.println("\nnew battlefieldcreated");
                         }else {
                             msg=msg.concat("\n{\"Message\":\"Error\"}\n");
                         }

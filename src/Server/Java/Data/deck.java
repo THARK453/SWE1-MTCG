@@ -48,34 +48,7 @@ public class deck implements SQL {
         return jsonArray;
      }
 
-    public static String testjson(ResultSet rst){
-        String msg="[";
-        JsonObject jsonObject0=new JsonObject();
-       jsonObject0.addProperty("Message: "," user deck");
-        msg=msg.concat(jsonObject0.toString()+",\n");
-        JsonArray jsonArray = new JsonArray();
-        try {
 
-            while (rst.next()){
-                ResultSet rstcards=GameData.Getsql(cards_selectid,rst.getString("card_id"));
-                if(rstcards.next()){
-                    JsonObject jsonObject=new JsonObject();
-
-                    jsonObject.addProperty("Id",rstcards.getString("id"));
-                    jsonObject.addProperty("Name",rstcards.getString("name"));
-                    jsonObject.addProperty("Damage",rstcards.getString("damage"));
-                    jsonArray.add(jsonObject);
-                    msg=msg.concat(jsonObject.toString()+",\n");
-                }
-            }
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        msg=parse.replaceLast(msg,",","]");
-        return msg;
-    }
 
      public static List<Cards> createdeckcards(int id){
           ResultSet rstdeck=selectdeck(id);

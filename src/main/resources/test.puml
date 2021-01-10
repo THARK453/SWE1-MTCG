@@ -3,10 +3,11 @@
 
 
 threadserver <|-- mainserver
-Parse.Request <|-- Parse.parse
-Parse.Response <|-- Parse.parse
-Parse.parse <|-- threadserver
-Parse.messages <|-- threadserver
+
+jsonmsg --|> parse
+Request --|> parse
+Response --|> parse
+
 
 class mainserver {
    main()
@@ -15,38 +16,44 @@ class mainserver {
 class threadserver {
  run()
 }
-class Parse.Request{
-    private String method;
 
-    private String url;
+class jsonmag{
+}
+class Request{
 
-    private String version;
+}
+class parse{
+}
+class Response{
 
-    private Map<String, String> headers;
-
-    private String message;
 }
 
-class Parse.parse{
- buildResponse()
- parserequest()
+
+Datasql --|> SQL
+deck --|> SQL
+PackageData --|> SQL
+scoreboard --|> SQL
+stats --|> SQL
+trade --|> SQL
+user --|> SQL
+
+interface SQL{
 }
-
-class Parse.Response{
-    private String version;
-    private int code;
-    private String status;
-
-    private Map<String, String> headers;
-
-    private String message;
+class GameData{
 }
-class Parse.messages{
-showMessages()
-addMessages(String message)
-SelectMessages(int index)
-updateMessages(int index,String message)
-DELETEMessages(int index)
+class Datasql{
+}
+class deck{
+}
+class PackageData{
+}
+class scoreboard{
+}
+class stats{
+}
+class trade{
+}
+class user{
 }
 
 @enduml
