@@ -10,3 +10,9 @@ The server runs by accepting HTTP requests.
 The curl script of Http request is in src/Server/message.
 
 The client is still under development.
+
+The program is connected to the local database of my computer. You can modify the database information in the GameData class to connect to other databases
+
+
+
+
